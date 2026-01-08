@@ -1,4 +1,3 @@
-export { Header } from "./Header";
 export { Hero } from "./Hero";
 export { Pain } from "./Pain";
 export { Agitation } from "./Agitation";

@@ -2,7 +2,6 @@
 
 import React from "react";
 import {
-  Header,
   Hero,
   Pain,
   Agitation,
@@ -17,7 +16,6 @@ import {
 export default function Home() {
   return (
     <div className="font-sans text-gray-800 bg-gray-50 antialiased selection:bg-orange-200">
-      <Header />
       <Hero />
       <Pain />
       <Agitation />
