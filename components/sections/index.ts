@@ -1,0 +1,10 @@
+export { Header } from "./Header";
+export { Hero } from "./Hero";
+export { Pain } from "./Pain";
+export { Target } from "./Target";
+export { CaseStudies } from "./CaseStudies";
+export { Benefits } from "./Benefits";
+export { FAQ } from "./FAQ";
+export { CTA } from "./CTA";
+export { Footer } from "./Footer";
+export { MobileCTA } from "./MobileCTA";
