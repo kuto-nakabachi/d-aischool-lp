@@ -3,11 +3,7 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 
-interface HeroProps {
-  scrollToCta: () => void;
-}
-
-export const Hero = ({ scrollToCta }: HeroProps) => {
+export const Hero = () => {
   return (
     <section className="pt-24 pb-12 md:pt-32 md:pb-20 bg-slate-900 text-white relative overflow-hidden">
       {/* 背景装飾 */}
@@ -58,7 +54,12 @@ export const Hero = ({ scrollToCta }: HeroProps) => {
         <div className="flex flex-col items-center gap-4">
           <button
             data-hero-cta
-            onClick={scrollToCta}
+            onClick={() => {
+              const ctaSection = document.getElementById("cta-section");
+              if (ctaSection) {
+                ctaSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
             className="w-full md:w-auto bg-gradient-to-b from-orange-400 to-orange-600 text-white text-xl md:text-2xl font-bold py-4 px-8 md:px-12 rounded-full shadow-[0_4px_0_rgb(194,65,12)] hover:shadow-[0_2px_0_rgb(194,65,12)] hover:translate-y-[2px] transition-all flex items-center justify-center gap-2 group"
           >
             <span>無料で診断を受ける</span>

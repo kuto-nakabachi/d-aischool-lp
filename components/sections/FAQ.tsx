@@ -5,7 +5,7 @@ import { FaqItem } from "../ui";
 
 export const FAQ = () => {
   return (
-    <section className="py-16 bg-white">
+    <section id="cta-section" className="py-16 bg-white">
       <div className="container mx-auto px-4 max-w-3xl">
         <h2 className="text-2xl md:text-3xl font-bold text-center text-slate-800 mb-10">
           よくあるご質問

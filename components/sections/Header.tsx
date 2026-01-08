@@ -2,11 +2,7 @@
 
 import React from "react";
 
-interface HeaderProps {
-  scrollToCta: () => void;
-}
-
-export const Header = ({ scrollToCta }: HeaderProps) => {
+export const Header = () => {
   return (
     <header className="fixed w-full bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100 shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -14,7 +10,12 @@ export const Header = ({ scrollToCta }: HeaderProps) => {
           D-AI<span className="text-orange-500">スクール</span>
         </div>
         <button
-          onClick={scrollToCta}
+          onClick={() => {
+            const ctaSection = document.getElementById("cta-section");
+            if (ctaSection) {
+              ctaSection.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
           className="hidden md:flex bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 rounded-full font-bold shadow-lg hover:shadow-orange-500/30 transition-all transform hover:-translate-y-0.5"
         >
           無料診断を受ける
