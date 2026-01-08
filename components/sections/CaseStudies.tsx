@@ -34,7 +34,7 @@ export const CaseStudies = () => {
             before="残業続きで時間がない"
             after="隙間時間のAI活用で月15万円達成！"
             color="blue"
-            imageSrc="/images/case-sato.jpg"
+            imageSrc="/images/case-sato.png"
           />
           <CaseCard
             badge="フリーランス"
@@ -42,7 +42,7 @@ export const CaseStudies = () => {
             before="低単価で疲弊"
             after="作業時間半減・月商25万→55万に倍増！"
             color="purple"
-            imageSrc="/images/case-tanaka.jpg"
+            imageSrc="/images/case-tanaka.png"
           />
           <CaseCard
             badge="未経験"
@@ -50,7 +50,7 @@ export const CaseStudies = () => {
             before="PCスキル人並み以下"
             after="動画生成スキルで、開始2ヶ月で初収益！"
             color="orange"
-            imageSrc="/images/case-yamamoto.jpg"
+            imageSrc="/images/case-yamamoto.png"
           />
         </div>
       </div>
