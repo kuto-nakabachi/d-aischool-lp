@@ -1,15 +1,18 @@
 'use client';
 
+import { useState } from 'react';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import { CheckCircle, Calendar, Clock, Video, X } from 'lucide-react';
+import { CheckCircle, Calendar, Clock, Copy, Video, X } from 'lucide-react';
 
 interface ConfirmationModalProps {
     isOpen: boolean;
     onClose: () => void;
     bookingData: {
         datetime: string;
+        endDatetime: string;
         meetLink: string;
+        calendarLink: string;
     } | null;
 }
 
@@ -17,6 +20,19 @@ export default function ConfirmationModal({ isOpen, onClose, bookingData }: Conf
     if (!isOpen || !bookingData) return null;
 
     const bookingDate = new Date(bookingData.datetime);
+    const bookingEndDate = new Date(bookingData.endDatetime);
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = async () => {
+        if (!bookingData.meetLink) return;
+        try {
+            await navigator.clipboard.writeText(bookingData.meetLink);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch {
+            setCopied(false);
+        }
+    };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
@@ -61,7 +77,7 @@ export default function ConfirmationModal({ isOpen, onClose, bookingData }: Conf
                         <div>
                             <p className="text-sm text-gray-600">時間</p>
                             <p className="font-semibold text-gray-900">
-                                {format(bookingDate, 'HH:mm', { locale: ja })} 〜 (30分)
+                                {format(bookingDate, 'HH:mm', { locale: ja })} 〜 {format(bookingEndDate, 'HH:mm', { locale: ja })} (1時間)
                             </p>
                         </div>
                     </div>
@@ -77,7 +93,32 @@ export default function ConfirmationModal({ isOpen, onClose, bookingData }: Conf
                                     rel="noopener noreferrer"
                                     className="text-sm text-green-700 hover:text-green-800 font-medium underline break-all"
                                 >
-                                    ミーティングに参加
+                                    {bookingData.meetLink}
+                                </a>
+                                <button
+                                    type="button"
+                                    onClick={handleCopy}
+                                    className="mt-3 inline-flex items-center gap-2 rounded-lg border border-green-200 bg-white px-3 py-2 text-xs font-bold text-green-700 hover:bg-green-100 transition-colors"
+                                >
+                                    <Copy className="w-4 h-4" />
+                                    {copied ? 'コピーしました' : 'URLをコピー'}
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {bookingData.calendarLink && (
+                        <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg">
+                            <Calendar className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm text-gray-600 mb-2">Googleカレンダー</p>
+                                <a
+                                    href={bookingData.calendarLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors"
+                                >
+                                    Googleカレンダーに登録
                                 </a>
                             </div>
                         </div>

@@ -26,6 +26,13 @@ interface BookingFormData {
     message: string;
 }
 
+interface BookingResult {
+    datetime: string;
+    endDatetime: string;
+    meetLink: string;
+    calendarLink: string;
+}
+
 // API URLの設定（環境に応じて変更）
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
@@ -36,8 +43,9 @@ export default function BookingPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [maxDate, setMaxDate] = useState<Date | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [bookingResult, setBookingResult] = useState<any>(null);
+    const [bookingResult, setBookingResult] = useState<BookingResult | null>(null);
 
     // 空き時間を取得
     useEffect(() => {
@@ -59,6 +67,9 @@ export default function BookingPage() {
 
             if (data.success) {
                 setAvailableSlots(data.slots);
+                if (data.period?.end) {
+                    setMaxDate(new Date(`${data.period.end}T00:00:00`));
+                }
             } else {
                 throw new Error(data.error || 'スケジュールの取得に失敗しました');
             }
@@ -177,6 +188,7 @@ export default function BookingPage() {
                                     selectedDate={selectedDate}
                                     onSelectDate={handleDateSelect}
                                     availableDates={availableDates}
+                                    maxDate={maxDate}
                                 />
                             </div>
 

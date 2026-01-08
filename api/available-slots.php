@@ -1,7 +1,7 @@
 <?php
 /**
  * 空き時間取得API
- * nakabachi@とkazuma@のスケジュールをマージして空き時間を返す
+ * 共有された複数カレンダーの空き時間を統合して返す
  */
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -14,21 +14,19 @@ try {
     $client = getGoogleClient();
     $service = new Google_Service_Calendar($client);
     
-    // 期間設定（今日から1ヶ月）
-    $timeMin = new DateTime('today');
-    $timeMax = new DateTime('+' . BOOKING_DAYS_AHEAD . ' days');
+    // 期間設定（今日から30日）
+    $timeMin = new DateTime('today', new DateTimeZone(APP_TIMEZONE));
+    $timeMax = new DateTime('+' . BOOKING_DAYS_AHEAD . ' days', new DateTimeZone(APP_TIMEZONE));
+    $now = new DateTime('now', new DateTimeZone(APP_TIMEZONE));
     
-    // nakabachi@のイベント取得
-    $nakabachiEvents = getCalendarEvents($service, CALENDAR_NAKABACHI, $timeMin, $timeMax);
-    
-    // kazuma@のイベント取得
-    $kazumaEvents = getCalendarEvents($service, CALENDAR_KAZUMA, $timeMin, $timeMax);
-    
-    // イベントをマージ
-    $allEvents = array_merge($nakabachiEvents, $kazumaEvents);
+    // 各カレンダーのイベント取得
+    $calendarEvents = [];
+    foreach (BOOKING_CALENDARS as $calendarId) {
+        $calendarEvents[$calendarId] = getCalendarEvents($service, $calendarId, $timeMin, $timeMax);
+    }
     
     // 空き時間スロットを計算
-    $availableSlots = calculateAvailableSlots($allEvents, $timeMin, $timeMax);
+    $availableSlots = calculateAvailableSlots($calendarEvents, $timeMin, $timeMax, $now);
     
     sendJsonResponse([
         'success' => true,
@@ -62,17 +60,24 @@ function getCalendarEvents($service, $calendarId, $timeMin, $timeMax) {
     $events = [];
     
     foreach ($results->getItems() as $event) {
-        $start = $event->start->dateTime ?: $event->start->date;
-        $end = $event->end->dateTime ?: $event->end->date;
-        
-        // 終日イベントや透明度が設定されているイベントはスキップ
-        if ($event->transparency === 'transparent' || !$event->start->dateTime) {
+        if ($event->transparency === 'transparent') {
             continue;
         }
         
+        $timezone = new DateTimeZone(APP_TIMEZONE);
+        
+        if ($event->start->dateTime) {
+            $start = new DateTime($event->start->dateTime, $timezone);
+            $end = new DateTime($event->end->dateTime, $timezone);
+        } else {
+            // 終日予定は1日すべて埋まっている扱いにする
+            $start = new DateTime($event->start->date, $timezone);
+            $end = new DateTime($event->end->date, $timezone);
+        }
+        
         $events[] = [
-            'start' => new DateTime($start),
-            'end' => new DateTime($end),
+            'start' => $start,
+            'end' => $end,
         ];
     }
     
@@ -82,7 +87,7 @@ function getCalendarEvents($service, $calendarId, $timeMin, $timeMax) {
 /**
  * 空き時間スロットを計算
  */
-function calculateAvailableSlots($events, $timeMin, $timeMax) {
+function calculateAvailableSlots($calendarEvents, $timeMin, $timeMax, $now) {
     $slots = [];
     $currentDate = clone $timeMin;
     
@@ -91,7 +96,7 @@ function calculateAvailableSlots($events, $timeMin, $timeMax) {
         
         // 営業日のみ処理
         if (in_array($dayOfWeek, BUSINESS_DAYS)) {
-            $daySlots = generateDaySlots($currentDate, $events);
+            $daySlots = generateDaySlots($currentDate, $calendarEvents, $now);
             
             if (!empty($daySlots)) {
                 $slots[$currentDate->format('Y-m-d')] = $daySlots;
@@ -107,7 +112,7 @@ function calculateAvailableSlots($events, $timeMin, $timeMax) {
 /**
  * 1日分の空き時間スロットを生成
  */
-function generateDaySlots($date, $events) {
+function generateDaySlots($date, $calendarEvents, $now) {
     $slots = [];
     $slotStart = clone $date;
     $slotStart->setTime(BUSINESS_START_HOUR, 0, 0);
@@ -119,8 +124,16 @@ function generateDaySlots($date, $events) {
         $slotEnd = clone $slotStart;
         $slotEnd->modify('+' . SLOT_DURATION_MINUTES . ' minutes');
         
-        // このスロットが予定と重複していないかチェック
-        if (!isSlotOccupied($slotStart, $slotEnd, $events)) {
+        // 当日の過去時間は除外
+        if ($slotStart <= $now) {
+            $slotStart = $slotEnd;
+            continue;
+        }
+        
+        $assignedCalendar = pickCalendarForSlot(BOOKING_CALENDARS, $slotStart);
+        $assignedEvents = $calendarEvents[$assignedCalendar] ?? [];
+        
+        if (!isSlotOccupied($slotStart, $slotEnd, $assignedEvents)) {
             $slots[] = [
                 'start' => $slotStart->format('H:i'),
                 'end' => $slotEnd->format('H:i'),
@@ -146,4 +159,14 @@ function isSlotOccupied($slotStart, $slotEnd, $events) {
     }
     
     return false;
+}
+
+/**
+ * スロットごとの担当カレンダーを決める（疑似ランダム）
+ */
+function pickCalendarForSlot($calendarIds, $slotStart) {
+    $seed = BOOKING_SLOT_SEED . '|' . $slotStart->format(DateTime::RFC3339);
+    $hash = hash('sha256', $seed);
+    $index = hexdec(substr($hash, 0, 8)) % count($calendarIds);
+    return $calendarIds[$index];
 }

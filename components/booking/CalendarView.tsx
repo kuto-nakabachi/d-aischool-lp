@@ -9,11 +9,13 @@ interface CalendarViewProps {
     selectedDate: Date | null;
     onSelectDate: (date: Date) => void;
     availableDates: Set<string>;
+    maxDate?: Date | null;
 }
 
-export default function CalendarView({ selectedDate, onSelectDate, availableDates }: CalendarViewProps) {
+export default function CalendarView({ selectedDate, onSelectDate, availableDates, maxDate }: CalendarViewProps) {
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const today = startOfToday();
+    const maxMonth = maxDate ? startOfMonth(maxDate) : addMonths(today, 1);
 
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(currentMonth);
@@ -32,7 +34,6 @@ export default function CalendarView({ selectedDate, onSelectDate, availableDate
 
     const handleNextMonth = () => {
         const nextMonth = addMonths(currentMonth, 1);
-        const maxMonth = addMonths(today, 1);
         if (nextMonth <= maxMonth) {
             setCurrentMonth(nextMonth);
         }
@@ -65,7 +66,7 @@ export default function CalendarView({ selectedDate, onSelectDate, availableDate
 
                 <button
                     onClick={handleNextMonth}
-                    disabled={currentMonth >= addMonths(today, 1)}
+                    disabled={currentMonth >= maxMonth}
                     className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                     <ChevronRight className="w-5 h-5 text-gray-700" />

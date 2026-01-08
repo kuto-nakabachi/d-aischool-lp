@@ -53,7 +53,7 @@ export default function TimeSlotSelector({ selectedDate, slots, selectedSlot, on
                         >
                             <div className="flex items-center justify-center gap-1">
                                 <Clock className="w-4 h-4" />
-                                <span>{slot.start}</span>
+                                <span>{slot.start} - {slot.end}</span>
                             </div>
                         </button>
                     );

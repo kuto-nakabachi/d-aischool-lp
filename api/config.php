@@ -4,7 +4,8 @@
  */
 
 // タイムゾーン設定
-date_default_timezone_set('Asia/Tokyo');
+define('APP_TIMEZONE', 'Asia/Tokyo');
+date_default_timezone_set(APP_TIMEZONE);
 
 // カレンダーID
 define('CALENDAR_NAKABACHI', 'nakabachi@decentralizedpro.io');
@@ -13,14 +14,23 @@ define('CALENDAR_HORITA', 'horita@decentralizedpro.io');
 
 // 営業時間設定
 define('BUSINESS_START_HOUR', 10);  // 10:00
-define('BUSINESS_END_HOUR', 18);    // 18:00
-define('SLOT_DURATION_MINUTES', 30); // 30分単位
+define('BUSINESS_END_HOUR', 19);    // 19:00
+define('SLOT_DURATION_MINUTES', 60); // 1時間単位
 
 // 営業日設定（月曜日=1, 日曜日=7）
 define('BUSINESS_DAYS', [1, 2, 3, 4, 5]); // 平日のみ
 
 // 予約期間設定
-define('BOOKING_DAYS_AHEAD', 30); // 1ヶ月先まで予約可能
+define('BOOKING_DAYS_AHEAD', 30); // 今日から30日先まで予約可能
+
+// 予約対象カレンダー
+define('BOOKING_CALENDARS', [
+    CALENDAR_HORITA,
+    CALENDAR_NAKABACHI,
+]);
+
+// スロット選定のシード値（変更すると割当が変わります）
+define('BOOKING_SLOT_SEED', 'booking-slot-v1');
 
 // 認証情報ファイルパス
 define('CREDENTIALS_PATH', __DIR__ . '/calendar-booking-system-483704-3ba0696aeab4.json');
@@ -28,11 +38,18 @@ define('CREDENTIALS_PATH', __DIR__ . '/calendar-booking-system-483704-3ba0696aea
 // CORS設定
 define('ALLOWED_ORIGINS', [
     'http://localhost:3000',
+    'http://localhost:3001',
     'https://yourdomain.com', // 本番環境のドメインに変更してください
 ]);
 
 // エラーログ設定
 define('ERROR_LOG_PATH', __DIR__ . '/error.log');
+
+// 通知メール送信元（運用環境に合わせて変更）
+define('NOTIFICATION_FROM_EMAIL', 'no-reply@example.com');
+
+// ドメイン全体の委任を使う場合は対象ユーザーを指定（空の場合は招待を送らない）
+define('GOOGLE_DELEGATED_USER', 'nakabachi@decentralizedpro.io');
 
 /**
  * CORSヘッダーを設定
