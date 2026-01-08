@@ -1,68 +1,56 @@
 "use client";
 
 import React from "react";
-import { DetailedCaseCard } from "../ui";
+import { Star } from "lucide-react";
+import { CaseCard } from "../ui";
 
 export const CaseStudies = () => {
   return (
-    <section className="py-20 bg-slate-50">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-slate-900 mb-4">
-            「戦略」を変えただけで、
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+            この診断を受けて、
             <br className="md:hidden" />
             人生が変わった人たち
           </h2>
-          <p className="text-slate-600">※実際にスクールで学び、成果を出された方の事例です</p>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="flex text-yellow-400">
+              <Star className="w-5 h-5 fill-current" />
+              <Star className="w-5 h-5 fill-current" />
+              <Star className="w-5 h-5 fill-current" />
+              <Star className="w-5 h-5 fill-current" />
+              <Star className="w-5 h-5 fill-current" />
+            </div>
+            <span className="font-bold text-slate-800 text-lg">4.8</span>
+            <span className="text-slate-500 text-sm">(参加者の声)</span>
+          </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {/* Case 1 */}
-          <DetailedCaseCard
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <CaseCard
             badge="会社員 × 副業"
-            title="本業は忙しいまま、隙間時間で『月15万円』の第二の柱ができました"
-            profile="佐藤 健一さん（仮名）／ 28歳・法人営業職"
-            before="毎日の残業でクタクタ。手取りは増えず、将来のために副業をしたいが、帰宅後に作業する時間も体力も残っていなかった。"
-            after="副業月収 0円 → 15万円（年収換算＋180万円ペース）"
-            secret="1記事3時間かかっていたブログ・SNS投稿を、AIライティング×自動投稿で30分に短縮。通勤電車と昼休みのスマホ操作だけでコンテンツを量産。"
-            comment="最初は『AIなんて難しそう』と思っていましたが、個別相談で『今の生活リズムを変えずにできる方法』を提案してもらえたのが大きかったです。今では、副業の収益で毎月好きなものを買えるようになりました。"
+            name="佐藤さん (28歳・営業)"
+            before="残業続きで時間がない"
+            after="隙間時間のAI活用で月15万円達成！"
             color="blue"
+            imageSrc="/images/case-sato.jpg"
           />
-
-          {/* Case 2 */}
-          <DetailedCaseCard
-            badge="フリーランス × 単価UP"
-            title="『安売りライター』から脱却。作業時間は半分、収入は倍になりました"
-            profile="田中 美咲さん（仮名）／ 31歳・Webライター"
-            before="文字単価0.5円〜1円の案件を大量にこなす毎日。朝から晩まで書き続けても月収25万円が限界で、腱鞘炎と精神的な疲れに悩んでいた。"
-            after="月商 25万円 → 55万円（労働時間は1日8時間→4時間に半減）"
-            secret="AIを使って構成案作成〜図解生成まで請け負う『AIディレクター』へ転身。AIを優秀な部下にすることで執筆スピードが5倍になり、高単価なコンサル案件を獲得。"
-            comment="ただのライターはAIに仕事を奪われると焦っていましたが、逆でした。AIを『優秀な部下』にする方法を学んだおかげで、自分はクライアントとの交渉や戦略に集中できています。時給換算で4倍近くになりました。"
+          <CaseCard
+            badge="フリーランス"
+            name="田中さん (31歳・ライター)"
+            before="低単価で疲弊"
+            after="作業時間半減・月商25万→55万に倍増！"
             color="purple"
+            imageSrc="/images/case-tanaka.jpg"
           />
-
-          {/* Case 3 */}
-          <DetailedCaseCard
-            badge="会社員 × キャリア/年収UP"
-            title="『ただの事務員』だった私が、社内で唯一のAI担当として昇進しました"
-            profile="伊藤 舞さん（仮名）／ 26歳・一般事務"
-            before="データ入力やメール返信などの単純作業ばかり。「この仕事、いつかなくなるかも」という漠然とした不安があったが、特別なスキルもなかった。"
-            after="年収 320万円 → 450万円（＋130万円UPの転職に成功）"
-            secret="「Excel×ChatGPT連携」や「議事録自動化」を実践し、部署の残業を月20時間削減。その実績を持ってITベンチャーへ転職し、「AI業務改善の即戦力」として評価された。"
-            comment="特別なプログラミングができなくても、『AIへの指示の出し方』を知っているだけでここまで市場価値が上がるとは驚きです。個別相談でキャリアの棚卸しをしてもらわなければ、今も不安なまま事務作業を続けていたと思います。"
-            color="green"
-          />
-
-          {/* Case 4 */}
-          <DetailedCaseCard
-            badge="未経験 × 異業種"
-            title="クリエイティブ経験ゼロから、AI動画生成で『プロ』として案件を獲得！"
-            profile="山本 浩二さん（仮名）／ 34歳・製造業（工場勤務）"
-            before="ITとは無縁の現場仕事。PCスキルも人並み以下だったが、「動画編集で稼ぎたい」という憧れだけはあった。しかし、高度な編集ソフトの習得で挫折。"
-            after="初案件獲得で5万円 → 半年で月収30万円（独立視野）"
-            secret="センス不要の「生成AI動画」に特化。テキストから広告動画を生成するスキルを習得。「センス」ではなく「プロンプト」で品質が決まるため、未経験からでもプロ顔負けの納品物が作れるように。"
-            comment="『センスがないと無理』と諦めていましたが、AIなら言葉で指示するだけで映像が作れる。個別相談で『未経験ならこのジャンルが一番勝ちやすい』と教えてもらった通りに進めたら、開始2ヶ月で初収益が出ました。"
+          <CaseCard
+            badge="未経験"
+            name="山本さん (34歳・製造業)"
+            before="PCスキル人並み以下"
+            after="動画生成スキルで、開始2ヶ月で初収益！"
             color="orange"
+            imageSrc="/images/case-yamamoto.jpg"
           />
         </div>
       </div>
