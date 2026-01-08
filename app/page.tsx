@@ -12,7 +12,7 @@ import {
   FAQ,
   CTA,
   Footer,
-  MobileCTA,
+  StickyCTA,
 } from "@/components/sections";
 
 export default function Home() {
@@ -35,7 +35,7 @@ export default function Home() {
       <FAQ />
       <CTA />
       <Footer />
-      <MobileCTA scrollToCta={scrollToCta} />
+      <StickyCTA />
     </div>
   );
 }
