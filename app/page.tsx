@@ -5,6 +5,7 @@ import {
   Header,
   Hero,
   Pain,
+  Agitation,
   Target,
   CaseStudies,
   Benefits,
@@ -27,6 +28,7 @@ export default function Home() {
       <Header scrollToCta={scrollToCta} />
       <Hero scrollToCta={scrollToCta} />
       <Pain />
+      <Agitation />
       <Target />
       <CaseStudies />
       <Benefits />

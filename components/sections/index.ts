@@ -1,6 +1,7 @@
 export { Header } from "./Header";
 export { Hero } from "./Hero";
 export { Pain } from "./Pain";
+export { Agitation } from "./Agitation";
 export { Target } from "./Target";
 export { CaseStudies } from "./CaseStudies";
 export { Benefits } from "./Benefits";
