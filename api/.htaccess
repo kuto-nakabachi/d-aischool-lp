@@ -1,0 +1,12 @@
+# セキュリティ設定
+<Files "*.json">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# PHPエラー表示設定（本番環境では無効化）
+php_flag display_errors Off
+php_flag log_errors On
+
+# 文字コード設定
+AddDefaultCharset UTF-8

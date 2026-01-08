@@ -52,19 +52,14 @@ export const Hero = () => {
         </div>
 
         <div className="flex flex-col items-center gap-4">
-          <button
+          <a
+            href="/booking"
             data-hero-cta
-            onClick={() => {
-              const ctaSection = document.getElementById("cta-section");
-              if (ctaSection) {
-                ctaSection.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
             className="w-full md:w-auto bg-gradient-to-b from-orange-400 to-orange-600 text-white text-xl md:text-2xl font-bold py-4 px-8 md:px-12 rounded-full shadow-[0_4px_0_rgb(194,65,12)] hover:shadow-[0_2px_0_rgb(194,65,12)] hover:translate-y-[2px] transition-all flex items-center justify-center gap-2 group"
           >
             <span>無料で診断を受ける</span>
             <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-          </button>
+          </a>
           <p className="text-xs text-slate-400">※60分で今後のキャリアプランが明確になります</p>
         </div>
       </div>

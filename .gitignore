@@ -32,3 +32,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Google Calendar API credentials
+api/calendar-booking-system-*.json
+
+# PHP dependencies
+api/vendor/
+api/composer.lock
