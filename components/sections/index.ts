@@ -6,5 +6,4 @@ export { CaseStudies } from "./CaseStudies";
 export { Benefits } from "./Benefits";
 export { FAQ } from "./FAQ";
 export { Footer } from "./Footer";
-export { MobileCTA } from "./MobileCTA";
 export { StickyCTA } from "./StickyCTA";
