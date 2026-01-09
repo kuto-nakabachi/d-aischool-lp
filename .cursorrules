@@ -1,0 +1,35 @@
+# D-AI School LP - Cursor/AI Rules
+
+## 必須ルール
+
+1. **mainブランチで直接作業禁止** - 必ずfeature/*ブランチを作成すること
+2. **開発フロー**: feature/* → staging → main の順序を守ること
+3. **画像パス**: 必ず`basePath`を付けること（`${basePath}/images/...`）
+4. **本番デプロイ**: ユーザーの許可なくmainにマージしないこと
+
+## Git運用
+
+```bash
+# 新機能開発
+git checkout staging && git pull origin staging
+git checkout -b feature/機能名
+# 開発...
+git checkout staging && git merge feature/機能名
+git push origin staging
+# Xserver確認後、ユーザー許可を得てmainにマージ
+```
+
+## 技術スタック
+
+- Next.js 15.1.3 (static export)
+- TypeScript
+- Tailwind CSS
+- PHP (Google Calendar API)
+
+## 環境
+
+- Local: http://localhost:3000
+- Staging: https://decentralizedpro.io/school/Nakabachi/
+- Production: main branch (same URL)
+
+## 詳細は CLAUDE.md を参照
