@@ -2,6 +2,54 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
+      // パスワード保護の除外パス
+      const publicPaths = ['/_next', '/api'];
+      
+      if (publicPaths.some(path => request.nextUrl.pathname.startsWith(path))) {
+              return NextResponse.next();
+      }
+    
+      // Authorization ヘッダーから認証情報を取得
+      const authHeader = request.headers.get('authorization');
+      
+      // 設定されたパスワード
+      const expectedPassword = 'D0000';
+      
+      // パスワードが正しいかチェック
+      if (authHeader) {
+              try {
+                        const base64Credentials = authHeader.slice(6); // "Basic " を削除
+                        
+                        // Base64 デコード (エッジ互換版)
+                        const decodedCredentials = atob(base64Credentials);
+                        const [_, password] = decodedCredentials.split(':');
+                        
+                        if (password === expectedPassword) {
+                                    return NextResponse.next();
+                        }
+              } catch (error) {
+                        // デコードエラーの場合は認証失敗として処理
+              }
+      }
+    
+      // 認証が失敗した場合、401を返す
+      return new NextResponse('Unauthorized', {
+              status: 401,
+              headers: {
+                        'WWW-Authenticate': 'Basic realm="secure area"',
+              },
+      });
+}
+
+// どのパスに対してミドルウェアを適用するかを指定
+export const config = {
+      matcher: [
+              '/((?!api|_next/static|_next/image|favicon.ico).*)',
+            ],
+};import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
     // パスワード保護の除外パス（必要に応じて追加）
   const publicPaths = ['/_next', '/api'];
 
