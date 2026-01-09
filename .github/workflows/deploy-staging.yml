@@ -47,10 +47,7 @@ jobs:
 
       - name: Update PHP config for production
         run: |
-          # 認証情報ファイルパスを更新
           sed -i "s|define('CREDENTIALS_PATH', __DIR__ . '/calendar-booking-system-483704-3ba0696aeab4.json');|define('CREDENTIALS_PATH', __DIR__ . '/credentials.json');|g" api/config.php
-
-          # CORS設定を本番ドメインに更新
           sed -i "s|'http://localhost:3000'|'https://${{ env.PRODUCTION_DOMAIN }}'|g" api/config.php
           sed -i "s|'http://localhost:3001'|'https://www.${{ env.PRODUCTION_DOMAIN }}'|g" api/config.php
           sed -i "s|'http://localhost:3002'|'https://${{ env.PRODUCTION_DOMAIN }}'|g" api/config.php
@@ -59,39 +56,29 @@ jobs:
       - name: Prepare deployment structure with Basic Auth
         run: |
           mkdir -p deploy
-          # Copy static files
           cp -r out/* deploy/
-          # Copy API files
           mkdir -p deploy/api
           cp api/*.php deploy/api/
           cp api/credentials.json deploy/api/
           cp -r api/vendor deploy/api/
-
-          # Create .htpasswd
           echo '${{ secrets.HTPASSWD_CONTENT }}' > deploy/.htpasswd
+          cat > deploy/.htaccess << 'HTACCESS'
+AuthType Basic
+AuthName "Staging Environment"
+AuthUserFile /home/dinc/decentralizedpro.io/public_html/school/Nakabachi/.htpasswd
+Require valid-user
 
-          # Create .htaccess with Basic Auth
-          cat > deploy/.htaccess << EOF
-          AuthType Basic
-          AuthName "Staging Environment"
-          AuthUserFile ${{ env.DEPLOY_PATH }}/.htpasswd
-          Require valid-user
+RewriteEngine On
+RewriteBase /school/Nakabachi/
 
-          RewriteEngine On
-          RewriteBase ${{ env.BASE_PATH }}/
+# Handle static files
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
 
-          # API requests bypass auth
-          RewriteCond %{REQUEST_URI} ^${{ env.BASE_PATH }}/api/
-          RewriteRule ^ - [L]
-
-          # Handle static files
-          RewriteCond %{REQUEST_FILENAME} -f [OR]
-          RewriteCond %{REQUEST_FILENAME} -d
-          RewriteRule ^ - [L]
-
-          # SPA fallback
-          RewriteRule ^ index.html [L]
-          EOF
+# SPA fallback
+RewriteRule ^ index.html [L]
+HTACCESS
 
       - name: Deploy to Xserver via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -105,9 +92,5 @@ jobs:
 
       - name: Deployment complete
         run: |
-          echo "=========================================="
           echo "Staging deployment completed!"
           echo "URL: https://${{ env.PRODUCTION_DOMAIN }}${{ env.BASE_PATH }}/"
-          echo "Basic Auth enabled"
-          echo "=========================================="
-# Trigger deployment 20260109-134500
