@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { User } from "lucide-react";
 
 interface CaseCardProps {
@@ -57,9 +58,11 @@ export const CaseCard = ({
         <div className="flex items-center gap-4 mb-5">
           <div className="w-16 h-16 rounded-full bg-slate-200 shrink-0 flex items-center justify-center overflow-hidden border-2 border-white shadow-md">
             {imageSrc ? (
-              <img
+              <Image
                 src={imageSrc}
                 alt={`${name}の写真`}
+                width={64}
+                height={64}
                 className="w-full h-full object-cover"
               />
             ) : (
