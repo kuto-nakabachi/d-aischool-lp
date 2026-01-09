@@ -10,7 +10,7 @@ on:
 env:
   PRODUCTION_DOMAIN: decentralizedpro.io
   BASE_PATH: /school/Nakabachi
-  DEPLOY_PATH: /home/dinc/decentralizedpro.io/public_html/school/Nakabachi
+  DEPLOY_PATH: decentralizedpro.io/public_html/school/Nakabachi
 
 jobs:
   build-and-deploy-staging:
