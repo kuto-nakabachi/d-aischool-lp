@@ -2,6 +2,45 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
+        const publicPaths = ['/_next', '/api'];
+        
+        if (publicPaths.some(path => request.nextUrl.pathname.startsWith(path))) {
+                  return NextResponse.next();
+        }
+      
+        const authHeader = request.headers.get('authorization');
+        const expectedPassword = 'D0000';
+        
+        if (authHeader) {
+                  try {
+                              const base64Credentials = authHeader.slice(6);
+                              const decodedCredentials = atob(base64Credentials);
+                              const [_, password] = decodedCredentials.split(':');
+                              
+                              if (password === expectedPassword) {
+                                            return NextResponse.next();
+                              }
+                  } catch (error) {
+                              // Auth error
+                  }
+        }
+      
+        return new NextResponse('Unauthorized', {
+                  status: 401,
+                  headers: {
+                              'WWW-Authenticate': 'Basic realm="secure area"',
+                  },
+        });
+}
+
+export const config = {
+        matcher: [
+                  '/((?!api|_next/static|_next/image|favicon.ico).*)',
+                ],
+};import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
       // パスワード保護の除外パス
       const publicPaths = ['/_next', '/api'];
       
