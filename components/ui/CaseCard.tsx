@@ -4,6 +4,8 @@ import React from "react";
 import Image from "next/image";
 import { User } from "lucide-react";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 interface CaseCardProps {
   badge: string;
   name: string;
@@ -21,6 +23,8 @@ export const CaseCard = ({
   color,
   imageSrc,
 }: CaseCardProps) => {
+  // 画像パスにbasePathを追加
+  const fullImageSrc = imageSrc ? `${basePath}${imageSrc}` : undefined;
   const colorClasses = {
     blue: {
       badge: "bg-blue-600",
@@ -57,9 +61,9 @@ export const CaseCard = ({
         {/* 写真 & 名前 */}
         <div className="flex items-center gap-4 mb-5">
           <div className="w-16 h-16 rounded-full bg-slate-200 shrink-0 flex items-center justify-center overflow-hidden border-2 border-white shadow-md">
-            {imageSrc ? (
+            {fullImageSrc ? (
               <Image
-                src={imageSrc}
+                src={fullImageSrc}
                 alt={`${name}の写真`}
                 width={64}
                 height={64}
