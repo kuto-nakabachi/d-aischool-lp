@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export const StickyCTA = () => {
@@ -37,7 +38,7 @@ export const StickyCTA = () => {
           : 'opacity-0 translate-y-10 pointer-events-none'
           }`}
       >
-        <a
+        <Link
           href="/booking"
           className="relative w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 rounded-full shadow-2xl hover:shadow-green-500/40 transition-all flex items-center justify-center gap-2 text-[15px]"
         >
@@ -48,12 +49,12 @@ export const StickyCTA = () => {
 
           AIキャリア診断を予約する
           <ArrowRight className="w-5 h-5 shrink-0" />
-        </a>
+        </Link>
       </div>
 
       {/* PC版 - 常に表示 */}
       <div className="hidden md:block fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-        <a
+        <Link
           href="/booking"
           className="relative bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 px-10 rounded-full shadow-2xl hover:shadow-green-500/40 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 text-lg"
         >
@@ -64,7 +65,7 @@ export const StickyCTA = () => {
 
           【無料】AIキャリア診断を予約する
           <ArrowRight className="w-5 h-5" />
-        </a>
+        </Link>
       </div>
     </>
   );
