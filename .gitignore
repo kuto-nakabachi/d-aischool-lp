@@ -36,7 +36,17 @@ next-env.d.ts
 
 # Google Calendar API credentials
 api/calendar-booking-system-*.json
+api/credentials.json
+api/*.json
 
 # PHP dependencies
 api/vendor/
 api/composer.lock
+
+# Deployment
+deploy/
+.htpasswd
+
+# Environment
+.env.local
+.env.*.local

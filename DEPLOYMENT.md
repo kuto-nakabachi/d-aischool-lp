@@ -1,228 +1,221 @@
-# Xserverへのデプロイ手順
+# Xserver デプロイ手順（LP + 予約API）
 
-このドキュメントでは、カレンダー予約システムをXserverにデプロイする手順を説明します。
+このドキュメントは、Next.js（静的書き出し）と PHP API を Xserver へ GitHub Actions で自動デプロイするための手順書です。
 
-## 前提条件
+---
 
-- Xserverのアカウントとサーバーが準備されていること
-- FTPクライアント（FileZillaなど）がインストールされていること
-- Composerがローカル環境にインストールされていること
+## 0. 前提条件
 
-## 1. Google Calendar API権限の設定
+- GitHub リポジトリにコードがプッシュされている
+- Xserver のアカウントがある
+- Google カレンダー共有と DWD（Domain‑Wide Delegation）が完了している
 
-カレンダー予約システムが正しく動作するには、サービスアカウントに各カレンダーへのアクセス権限を付与する必要があります。
+---
 
-### 手順
+## 1. GitHub Secrets の設定（初回のみ）
 
-1. **各Googleカレンダーにアクセス**
-   - `nakabachi@decentralizedpro.io`
-   - `kazuma@decentralizedpro.io`
-   - `horita@decentralizedpro.io`
+GitHub リポジトリの `Settings` → `Secrets and variables` → `Actions` で以下を登録:
 
-2. **カレンダーの共有設定**
-   - Googleカレンダーを開く
-   - 左側のカレンダーリストから該当のカレンダーを選択
-   - 「設定と共有」をクリック
-   - 「特定のユーザーとの共有」セクションで「ユーザーを追加」をクリック
+| Secret名 | 値 | 説明 |
+|----------|-----|------|
+| `FTP_USERNAME` | `dinc` | XserverのFTPユーザー名 |
+| `FTP_PASSWORD` | サーバーパスワード | XserverのFTPパスワード |
+| `GOOGLE_CALENDAR_CREDENTIALS` | JSONファイルの中身 | Google Calendar API認証情報 |
+| `HTPASSWD_CONTENT` | `test:$apr1$xxxxx` | Basic認証用（ステージング環境用） |
 
-3. **サービスアカウントを追加**
-   - メールアドレス: `calendar-api-service@calendar-booking-system-483704.iam.gserviceaccount.com`
-   - 権限:
-     - `nakabachi@decentralizedpro.io`: **予定の変更権限**（読み書き）
-     - `kazuma@decentralizedpro.io`: **予定の表示権限**（読み取りのみ）
-     - `horita@decentralizedpro.io`: **予定の変更権限**（読み書き）
+### 1.1 GOOGLE_CALENDAR_CREDENTIALS の取得
 
-4. **保存**
-   - 「送信」をクリックして設定を保存
+1. `api/calendar-booking-system-483704-3ba0696aeab4.json` の内容をコピー
+2. GitHub Secretsに貼り付け
 
-## 2. PHPバックエンドの準備
+### 1.2 HTPASSWD_CONTENT の生成
 
-### 2.1 ローカルでComposer依存関係をインストール
-
+ローカルで以下を実行:
 ```bash
-cd /Users/bachi/スクールLP/api
-composer install
+htpasswd -nb test your_password
+```
+出力例: `test:$apr1$xxxxxxxx$yyyyyyyyyyyyyyyy`
+
+この出力をそのまま `HTPASSWD_CONTENT` に設定
+
+---
+
+## 2. デプロイフロー
+
+### 2.1 ステージング環境（テスト用・Basic認証あり）
+
+```
+[develop/staging ブランチにプッシュ]
+         ↓
+[GitHub Actions: deploy-staging.yml]
+         ↓
+[Xserver: /school/Nakabachi/ に自動デプロイ]
+         ↓
+[Basic認証で保護されたテスト環境]
 ```
 
-これにより、`vendor`ディレクトリにGoogle Calendar API用のPHPライブラリがインストールされます。
+**URL**: https://decentralizedpro.io/school/Nakabachi/
+**認証**: ユーザー名 `test` + 設定したパスワード
 
-### 2.2 認証情報ファイルの確認
+### 2.2 本番環境
 
-`api/calendar-booking-system-483704-3ba0696aeab4.json`が存在することを確認してください。
-
-### 2.3 config.phpの本番環境設定
-
-`api/config.php`を開き、`ALLOWED_ORIGINS`を本番環境のドメインに変更します:
-
-```php
-define('ALLOWED_ORIGINS', [
-    'https://yourdomain.com', // 本番環境のドメインに変更
-]);
+```
+[main ブランチにプッシュ]
+         ↓
+[GitHub Actions: deploy.yml]
+         ↓
+[Xserver: /school/Nakabachi/ に自動デプロイ]
+         ↓
+[Basic認証なしの本番環境]
 ```
 
-## 3. Next.jsアプリケーションのビルド
+---
 
-### 3.1 環境変数の設定
+## 3. ディレクトリ構成（Xserver上）
 
-プロジェクトルートに`.env.local`ファイルを作成し、API URLを設定します:
-
-```env
-NEXT_PUBLIC_API_URL=https://yourdomain.com/api
+```
+/home/dinc/decentralizedpro.io/public_html/school/Nakabachi/
+├── index.html          ← メインLP
+├── _next/              ← Next.jsアセット
+├── booking/
+│   └── index.html      ← 予約ページ
+├── api/
+│   ├── config.php
+│   ├── available-slots.php
+│   ├── create-booking.php
+│   ├── credentials.json  ← GitHub Secretsから生成
+│   └── vendor/           ← Composer依存
+├── .htaccess             ← ルーティング設定
+└── .htpasswd             ← Basic認証（ステージングのみ）
 ```
 
-### 3.2 ビルド
+---
+
+## 4. 手動デプロイ（必要な場合）
+
+### 4.1 ローカルビルド
 
 ```bash
 cd /Users/bachi/スクールLP
+npm ci
 npm run build
 ```
 
-### 3.3 静的エクスポート（オプション）
+`out/` ディレクトリが生成されます。
 
-Xserverで静的ファイルとして配信する場合は、`next.config.ts`を編集します:
+### 4.2 FTPアップロード
 
-```typescript
-import type { NextConfig } from "next";
+1. FileZilla等でXserverに接続
+   - ホスト: `sv14204.xserver.jp`
+   - ユーザー: `dinc`
+   - ポート: 21
 
-const nextConfig: NextConfig = {
-  output: 'export',
-  trailingSlash: true,
-};
+2. アップロード
+   - `out/` の中身 → `/public_html/school/Nakabachi/`
+   - `api/` の中身 → `/public_html/school/Nakabachi/api/`
 
-export default nextConfig;
-```
+### 4.3 パーミッション設定
 
-その後、再度ビルド:
+| ファイル | パーミッション |
+|----------|---------------|
+| `api/*.php` | 644 |
+| `api/credentials.json` | 600 |
+| `api/vendor/` | 755 |
 
-```bash
-npm run build
-```
+---
 
-これにより、`out`ディレクトリに静的ファイルが生成されます。
+## 5. Google カレンダー設定（済ならスキップ）
 
-## 4. Xserverへのアップロード
+### 5.1 共有設定
 
-### 4.1 FTP接続情報
+対象カレンダー:
+- `nakabachi@decentralizedpro.io`
+- `horita@decentralizedpro.io`
 
-Xserverのサーバーパネルから以下の情報を確認:
-- FTPホスト名
-- FTPユーザー名
-- FTPパスワード
+共有先:
+- `calendar-api-service@calendar-booking-system-483704.iam.gserviceaccount.com`
 
-### 4.2 ファイルのアップロード
+権限: **予定の変更権限（読み書き）**
 
-FTPクライアントを使用して、以下のファイルをアップロードします:
+### 5.2 DWD 設定（必須）
 
-#### PHPバックエンド（`api`ディレクトリ）
+1. GCP でサービスアカウントの **Domain‑Wide Delegation を有効化**
+2. Admin Console → 「セキュリティ」→「API の制御」→「ドメイン全体の委任」
+3. クライアント ID を登録し、スコープに以下を追加:
+   ```
+   https://www.googleapis.com/auth/calendar
+   ```
 
-アップロード先: `/public_html/api/`
+---
 
-アップロードするファイル:
-- `api/composer.json`
-- `api/config.php`
-- `api/available-slots.php`
-- `api/create-booking.php`
-- `api/.htaccess`
-- `api/vendor/` （ディレクトリごと）
-- `api/calendar-booking-system-483704-3ba0696aeab4.json`
+## 6. 動作確認
 
-> **重要**: 認証情報ファイルは公開ディレクトリに配置されますが、`.htaccess`により直接アクセスは禁止されています。
-
-#### Next.jsアプリケーション
-
-**静的エクスポートの場合:**
-
-アップロード先: `/public_html/`
-
-アップロードするファイル:
-- `out/` ディレクトリの内容をすべて `/public_html/` にアップロード
-
-**Node.jsサーバーの場合:**
-
-Xserverは標準でNode.jsをサポートしていないため、静的エクスポートを推奨します。
-
-### 4.3 ファイルパーミッションの設定
-
-FTPクライアントで以下のパーミッションを設定:
-
-- `api/*.php`: 644
-- `api/.htaccess`: 644
-- `api/calendar-booking-system-*.json`: 600（より安全）
-- `api/vendor/`: 755（ディレクトリ）
-
-## 5. 動作確認
-
-### 5.1 APIエンドポイントのテスト
-
-ブラウザで以下のURLにアクセスして、APIが正しく動作するか確認:
+### 6.1 API テスト
 
 ```
-https://yourdomain.com/api/available-slots.php
+https://decentralizedpro.io/school/Nakabachi/api/available-slots.php
 ```
 
-正常に動作している場合、JSON形式で空き時間が返されます。
+空き枠 JSON が返れば OK。
 
-### 5.2 予約フローのテスト
+### 6.2 予約フロー確認
 
-1. LPにアクセス: `https://yourdomain.com/`
-2. 「無料で診断を受ける」ボタンをクリック
-3. カレンダーページに遷移することを確認
-4. 日付と時間を選択
-5. 予約フォームに情報を入力
-6. 予約を完了
-7. Googleカレンダーに予定が追加されているか確認
+1. https://decentralizedpro.io/school/Nakabachi/
+2. 「無料相談を予約」ボタンをクリック
+3. `/booking` へ遷移
+4. 日付・時間を選択
+5. フォーム送信
+6. Google Meet URL が表示される
+7. 招待メールが送信される（DWD 有効時）
 
-### 5.3 トラブルシューティング
+---
 
-**空き時間が取得できない場合:**
-- Google Calendar APIの権限設定を確認
-- `api/error.log`を確認してエラーメッセージを確認
-- `api/config.php`のカレンダーIDが正しいか確認
+## 7. よくある問題
 
-**予約が作成できない場合:**
-- CORSエラーが発生していないかブラウザのコンソールを確認
-- `api/config.php`の`ALLOWED_ORIGINS`に本番ドメインが含まれているか確認
+### 7.1 空き枠が出ない
 
-**認証エラーが発生する場合:**
-- 認証情報ファイルのパスが正しいか確認
-- サービスアカウントの権限が正しく設定されているか確認
+- 共有権限が不足していないか確認
+- 終日予定が埋めていないか確認
+- `api/error.log` を確認
 
-## 6. セキュリティ対策
+### 7.2 予約が失敗する
 
-### 6.1 認証情報の保護
+- DWD が有効か確認
+- `GOOGLE_DELEGATED_USER` が空でないか確認
+- `ALLOWED_ORIGINS` が本番ドメインになっているか確認
 
-- 認証情報ファイルは`.htaccess`で保護されていますが、可能であれば`public_html`の外に配置することを推奨
-- 定期的にサービスアカウントのキーをローテーション
+### 7.3 GitHub Actions が失敗する
 
-### 6.2 エラーログの監視
+- Secretsが正しく設定されているか確認
+- FTPパスワードに特殊文字がある場合はエスケープが必要な場合あり
 
-定期的に`api/error.log`を確認し、異常なアクセスやエラーがないかチェックしてください。
+### 7.4 Basic認証が効かない
 
-### 6.3 HTTPS化
+- `.htpasswd` のパスが正しいか確認
+- Xserverのアクセス制限設定と競合していないか確認
 
-必ずHTTPSを使用してください。XserverではSSL証明書を無料で取得できます。
+---
 
-## 7. メンテナンス
+## 8. ブランチ運用
 
-### コードの更新
+| ブランチ | 用途 | デプロイ先 |
+|----------|------|-----------|
+| `main` | 本番環境 | 本番（認証なし） |
+| `staging` | ステージング | ステージング（Basic認証） |
+| `develop` | 開発 | ステージング（Basic認証） |
 
-1. ローカルで変更を加える
-2. Gitでコミット
-3. 必要に応じて再ビルド
-4. FTPで変更ファイルをアップロード
+---
 
-### 依存関係の更新
+## 9. セキュリティチェックリスト
 
-```bash
-cd api
-composer update
-```
+本番公開前に確認:
 
-更新後、`vendor`ディレクトリを再度アップロードしてください。
+- [ ] `ALLOWED_ORIGINS` に本番ドメインのみ設定
+- [ ] `credentials.json` のパーミッションが600
+- [ ] Basic認証を解除（mainブランチ使用時）
+- [ ] エラーログの出力先を確認
+- [ ] HTTPS強制リダイレクトを確認
 
-## サポート
+---
 
-問題が発生した場合は、以下を確認してください:
-- Xserverのエラーログ
-- `api/error.log`
-- ブラウザのコンソール（開発者ツール）
+*最終更新: 2026-01-09*

@@ -1,0 +1,112 @@
+name: Deploy to Xserver (Staging with Basic Auth)
+
+on:
+  push:
+    branches:
+      - staging
+      - develop
+  workflow_dispatch:
+
+# ドメイン変更時はここを編集
+env:
+  PRODUCTION_DOMAIN: decentralizedpro.io
+  BASE_PATH: /school/Nakabachi
+  DEPLOY_PATH: /home/dinc/decentralizedpro.io/public_html/school/Nakabachi
+
+jobs:
+  build-and-deploy-staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js (static export)
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: https://${{ env.PRODUCTION_DOMAIN }}${{ env.BASE_PATH }}/api
+          NEXT_PUBLIC_BASE_PATH: ${{ env.BASE_PATH }}
+
+      - name: Create Google Calendar credentials file
+        run: |
+          echo '${{ secrets.GOOGLE_CALENDAR_CREDENTIALS }}' > api/credentials.json
+
+      - name: Install PHP dependencies
+        run: |
+          cd api
+          composer install --no-dev --optimize-autoloader
+
+      - name: Update PHP config for production
+        run: |
+          # 認証情報ファイルパスを更新
+          sed -i "s|define('CREDENTIALS_PATH', __DIR__ . '/calendar-booking-system-483704-3ba0696aeab4.json');|define('CREDENTIALS_PATH', __DIR__ . '/credentials.json');|g" api/config.php
+
+          # CORS設定を本番ドメインに更新
+          sed -i "s|'http://localhost:3000'|'https://${{ env.PRODUCTION_DOMAIN }}'|g" api/config.php
+          sed -i "s|'http://localhost:3001'|'https://www.${{ env.PRODUCTION_DOMAIN }}'|g" api/config.php
+          sed -i "s|'http://localhost:3002'|'https://${{ env.PRODUCTION_DOMAIN }}'|g" api/config.php
+          sed -i "s|'https://yourdomain.com'|'https://${{ env.PRODUCTION_DOMAIN }}'|g" api/config.php
+
+      - name: Prepare deployment structure with Basic Auth
+        run: |
+          mkdir -p deploy
+          # Copy static files
+          cp -r out/* deploy/
+          # Copy API files
+          mkdir -p deploy/api
+          cp api/*.php deploy/api/
+          cp api/credentials.json deploy/api/
+          cp -r api/vendor deploy/api/
+
+          # Create .htpasswd
+          echo '${{ secrets.HTPASSWD_CONTENT }}' > deploy/.htpasswd
+
+          # Create .htaccess with Basic Auth
+          cat > deploy/.htaccess << EOF
+          AuthType Basic
+          AuthName "Staging Environment"
+          AuthUserFile ${{ env.DEPLOY_PATH }}/.htpasswd
+          Require valid-user
+
+          RewriteEngine On
+          RewriteBase ${{ env.BASE_PATH }}/
+
+          # API requests bypass auth
+          RewriteCond %{REQUEST_URI} ^${{ env.BASE_PATH }}/api/
+          RewriteRule ^ - [L]
+
+          # Handle static files
+          RewriteCond %{REQUEST_FILENAME} -f [OR]
+          RewriteCond %{REQUEST_FILENAME} -d
+          RewriteRule ^ - [L]
+
+          # SPA fallback
+          RewriteRule ^ index.html [L]
+          EOF
+
+      - name: Deploy to Xserver via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: sv14204.xserver.jp
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./deploy/
+          server-dir: ${{ env.DEPLOY_PATH }}/
+          dangerous-clean-slate: false
+
+      - name: Deployment complete
+        run: |
+          echo "=========================================="
+          echo "Staging deployment completed!"
+          echo "URL: https://${{ env.PRODUCTION_DOMAIN }}${{ env.BASE_PATH }}/"
+          echo "Basic Auth enabled"
+          echo "=========================================="

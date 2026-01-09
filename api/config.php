@@ -39,6 +39,7 @@ define('CREDENTIALS_PATH', __DIR__ . '/calendar-booking-system-483704-3ba0696aea
 define('ALLOWED_ORIGINS', [
     'http://localhost:3000',
     'http://localhost:3001',
+    'http://localhost:3002',
     'https://yourdomain.com', // 本番環境のドメインに変更してください
 ]);
 
