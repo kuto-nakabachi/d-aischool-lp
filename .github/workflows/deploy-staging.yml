@@ -110,3 +110,4 @@ jobs:
           echo "URL: https://${{ env.PRODUCTION_DOMAIN }}${{ env.BASE_PATH }}/"
           echo "Basic Auth enabled"
           echo "=========================================="
+# Trigger deployment 20260109-134500
