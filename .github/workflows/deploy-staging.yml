@@ -7,7 +7,6 @@ on:
       - develop
   workflow_dispatch:
 
-# ドメイン変更時はここを編集
 env:
   PRODUCTION_DOMAIN: decentralizedpro.io
   BASE_PATH: /school/Nakabachi
@@ -37,13 +36,10 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: ${{ env.BASE_PATH }}
 
       - name: Create Google Calendar credentials file
-        run: |
-          echo '${{ secrets.GOOGLE_CALENDAR_CREDENTIALS }}' > api/credentials.json
+        run: echo '${{ secrets.GOOGLE_CALENDAR_CREDENTIALS }}' > api/credentials.json
 
       - name: Install PHP dependencies
-        run: |
-          cd api
-          composer install --no-dev --optimize-autoloader
+        run: cd api && composer install --no-dev --optimize-autoloader
 
       - name: Update PHP config for production
         run: |
@@ -53,32 +49,30 @@ jobs:
           sed -i "s|'http://localhost:3002'|'https://${{ env.PRODUCTION_DOMAIN }}'|g" api/config.php
           sed -i "s|'https://yourdomain.com'|'https://${{ env.PRODUCTION_DOMAIN }}'|g" api/config.php
 
-      - name: Prepare deployment structure with Basic Auth
+      - name: Prepare deployment structure
         run: |
-          mkdir -p deploy
-          cp -r out/* deploy/
           mkdir -p deploy/api
+          cp -r out/* deploy/
           cp api/*.php deploy/api/
           cp api/credentials.json deploy/api/
           cp -r api/vendor deploy/api/
           echo '${{ secrets.HTPASSWD_CONTENT }}' > deploy/.htpasswd
-          cat > deploy/.htaccess << 'HTACCESS'
-AuthType Basic
-AuthName "Staging Environment"
-AuthUserFile /home/dinc/decentralizedpro.io/public_html/school/Nakabachi/.htpasswd
-Require valid-user
 
-RewriteEngine On
-RewriteBase /school/Nakabachi/
-
-# Handle static files
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
-
-# SPA fallback
-RewriteRule ^ index.html [L]
-HTACCESS
+      - name: Create htaccess file
+        run: |
+          echo 'AuthType Basic' > deploy/.htaccess
+          echo 'AuthName "Staging Environment"' >> deploy/.htaccess
+          echo 'AuthUserFile /home/dinc/decentralizedpro.io/public_html/school/Nakabachi/.htpasswd' >> deploy/.htaccess
+          echo 'Require valid-user' >> deploy/.htaccess
+          echo '' >> deploy/.htaccess
+          echo 'RewriteEngine On' >> deploy/.htaccess
+          echo 'RewriteBase /school/Nakabachi/' >> deploy/.htaccess
+          echo '' >> deploy/.htaccess
+          echo 'RewriteCond %{REQUEST_FILENAME} -f [OR]' >> deploy/.htaccess
+          echo 'RewriteCond %{REQUEST_FILENAME} -d' >> deploy/.htaccess
+          echo 'RewriteRule ^ - [L]' >> deploy/.htaccess
+          echo '' >> deploy/.htaccess
+          echo 'RewriteRule ^ index.html [L]' >> deploy/.htaccess
 
       - name: Deploy to Xserver via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -91,6 +85,4 @@ HTACCESS
           dangerous-clean-slate: false
 
       - name: Deployment complete
-        run: |
-          echo "Staging deployment completed!"
-          echo "URL: https://${{ env.PRODUCTION_DOMAIN }}${{ env.BASE_PATH }}/"
+        run: echo "Staging deployment completed! URL https://${{ env.PRODUCTION_DOMAIN }}${{ env.BASE_PATH }}/"
