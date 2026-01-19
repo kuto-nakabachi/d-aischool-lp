@@ -79,7 +79,7 @@ export const CaseCard = ({
         {/* Before */}
         <div className="mb-3">
           <span className="text-xs font-bold text-slate-400 block mb-1">Before</span>
-          <p className="text-sm text-slate-600 bg-slate-50 p-3 rounded-lg">{before}</p>
+          <p className="text-sm text-slate-600 bg-slate-50 p-3 rounded-lg min-h-[72px] flex items-center">{before}</p>
         </div>
 
         {/* 矢印 */}
@@ -99,7 +99,7 @@ export const CaseCard = ({
         <div>
           <span className={`text-xs font-bold ${colors.text} block mb-1`}>After</span>
           <p
-            className={`text-sm font-bold ${colors.text} ${colors.bg} p-3 rounded-lg border border-current`}
+            className={`text-sm font-bold ${colors.text} ${colors.bg} p-3 rounded-lg border border-current min-h-[60px] flex items-center`}
           >
             {after}
           </p>

@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export const StickyCTA = () => {
+  const { theme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export const StickyCTA = () => {
       >
         <Link
           href="/booking"
-          className="relative w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 rounded-full shadow-2xl hover:shadow-green-500/40 transition-all flex items-center justify-center gap-2 text-[15px]"
+          className={`relative w-full ${theme.stickyCta.bg} text-white font-bold py-4 rounded-full shadow-2xl hover:${theme.stickyCta.shadow} transition-all flex items-center justify-center gap-2 text-[15px]`}
         >
           {/* 残り枠バッジ */}
           <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg animate-pulse whitespace-nowrap">
@@ -56,7 +58,7 @@ export const StickyCTA = () => {
       <div className="hidden md:block fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
         <Link
           href="/booking"
-          className="relative bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 px-10 rounded-full shadow-2xl hover:shadow-green-500/40 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 text-lg"
+          className={`relative ${theme.stickyCta.bg} text-white font-bold py-4 px-10 rounded-full shadow-2xl hover:${theme.stickyCta.shadow} hover:-translate-y-1 transition-all flex items-center justify-center gap-2 text-lg`}
         >
           {/* 残り枠バッジ */}
           <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg animate-pulse whitespace-nowrap">

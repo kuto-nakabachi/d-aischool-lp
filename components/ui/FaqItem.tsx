@@ -2,23 +2,25 @@
 
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Theme } from "@/contexts/ThemeContext";
 
 interface FaqItemProps {
   q: string;
   a: string;
+  theme?: Theme;
 }
 
-export const FaqItem = ({ q, a }: FaqItemProps) => {
+export const FaqItem = ({ q, a, theme }: FaqItemProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border border-slate-200 rounded-xl overflow-hidden">
+    <div className={`border ${theme?.faq.item || 'border-slate-200 bg-slate-50'} rounded-xl overflow-hidden`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-4 text-left bg-slate-50 hover:bg-slate-100 transition-colors"
+        className="w-full flex items-center justify-between p-4 text-left hover:bg-slate-100 transition-colors"
       >
-        <span className="font-bold text-slate-800 pr-4 flex gap-2">
-          <span className="text-orange-500">Q.</span>
+        <span className={`font-bold ${theme?.faq.text || 'text-slate-800'} pr-4 flex gap-2`}>
+          <span className={theme?.pain.accent || 'text-blue-600'}>Q.</span>
           {q}
         </span>
         {isOpen ? (
@@ -29,7 +31,7 @@ export const FaqItem = ({ q, a }: FaqItemProps) => {
       </button>
       {isOpen && (
         <div className="p-4 bg-white text-slate-600 text-sm leading-relaxed border-t border-slate-100">
-          <span className="font-bold text-orange-500 mr-2">A.</span>
+          <span className={`font-bold ${theme?.pain.accent || 'text-blue-600'} mr-2`}>A.</span>
           {a}
         </div>
       )}

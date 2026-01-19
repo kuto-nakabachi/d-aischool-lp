@@ -1,17 +1,20 @@
 "use client";
 
 import React from "react";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export const Agitation = () => {
+  const { theme } = useTheme();
+
   return (
-    <section className="py-16 bg-slate-50 border-t border-b border-slate-200">
+    <section className={`py-16 ${theme.agitation.bg} border-t border-b border-slate-200`}>
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <span className="bg-red-100 text-red-600 font-bold px-4 py-1 rounded-full text-sm inline-block mb-4">
+            <span className={`${theme.agitation.highlight} font-bold px-4 py-1 rounded-full text-sm inline-block mb-4`}>
               Warning
             </span>
-            <h2 className="text-2xl md:text-4xl font-bold text-slate-900 leading-tight">
+            <h2 className="text-2xl md:text-4xl font-bold text-slate-800 leading-tight">
               「様子見」をしている間に、
               <br />
               あなたの市場価値は暴落し始めています。
@@ -43,13 +46,13 @@ export const Agitation = () => {
                     2025
                   </span>
                 </div>
-                <div className="w-1/5 bg-blue-500 rounded-t-lg h-[50%] relative group">
-                  <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-blue-600">
+                <div className={`w-1/5 bg-gradient-to-t ${theme.agitation.graphBar} rounded-t-lg h-[50%] relative group`}>
+                  <span className={`absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold ${theme.agitation.accent}`}>
                     2027
                   </span>
                 </div>
-                <div className="w-1/5 bg-gradient-to-t from-red-500 to-orange-500 rounded-t-lg h-[90%] relative group shadow-lg">
-                  <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-sm font-bold text-red-600 whitespace-nowrap bg-white px-2 py-0.5 rounded shadow">
+                <div className={`w-1/5 bg-gradient-to-t ${theme.agitation.graphBar} rounded-t-lg h-[90%] relative group shadow-lg`}>
+                  <span className={`absolute -top-8 left-1/2 -translate-x-1/2 text-sm font-bold ${theme.agitation.accent} whitespace-nowrap bg-white px-2 py-0.5 rounded shadow`}>
                     15倍以上
                   </span>
                   <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-white text-xs font-bold">
@@ -60,23 +63,23 @@ export const Agitation = () => {
             </div>
 
             <div className="w-full md:w-1/2 space-y-4">
-              <p className="text-lg leading-relaxed text-slate-700">
+              <p className={`text-lg leading-relaxed ${theme.agitation.text}`}>
                 この爆発的な成長の中で、AIを「使いこなす人」と「使えない人」の間には、
-                <span className="font-bold text-red-600 bg-red-50 px-1">
+                <span className={`font-bold ${theme.agitation.highlight} px-1`}>
                   生涯年収で1億円近くの差
                 </span>
                 が生まれると言われています。
               </p>
-              <p className="text-lg leading-relaxed text-slate-700">
+              <p className={`text-lg leading-relaxed ${theme.agitation.text}`}>
                 「なんとなく興味はあるけど、周りがやってから...」その姿勢でいると、気づいた時には
-                <span className="font-bold border-b-2 border-red-500">
+                <span className={`font-bold border-b-2 ${theme.agitation.accent.replace('text-', 'border-')}`}>
                   「AIを使える人材」にあなたの仕事が奪われている
                 </span>
                 かもしれません。
               </p>
-              <p className="text-xl font-bold text-slate-900 mt-4">
+              <p className="text-xl font-bold text-slate-800 mt-4">
                 だからこそ、
-                <span className="text-white bg-slate-900 px-3 py-1 rounded">&quot;今&quot;</span>{" "}
+                <span className={`text-white bg-gradient-to-r ${theme.agitation.graphBar} px-3 py-1 rounded`}>&quot;今&quot;</span>{" "}
                 動くべきなのです。
               </p>
             </div>

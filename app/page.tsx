@@ -5,6 +5,7 @@ import {
   Hero,
   Pain,
   Agitation,
+  Consultation,
   Target,
   CaseStudies,
   Benefits,
@@ -19,6 +20,7 @@ export default function Home() {
       <Hero />
       <Pain />
       <Agitation />
+      <Consultation />
       <Target />
       <CaseStudies />
       <Benefits />

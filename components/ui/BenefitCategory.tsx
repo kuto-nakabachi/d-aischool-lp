@@ -20,7 +20,7 @@ export const BenefitCategory = ({
   color,
   items,
 }: BenefitCategoryProps) => (
-  <div className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
+  <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
     <div className={`p-4 ${color} text-white`}>
       <div className="flex items-center gap-3 mb-1">
         <div className="bg-white/20 p-2 rounded-lg">{icon}</div>
@@ -33,11 +33,11 @@ export const BenefitCategory = ({
         <p className="text-xs opacity-90">{subtitle}</p>
       </div>
     </div>
-    <div className="p-5">
+    <div className="p-5 bg-slate-50">
       <ul className="space-y-3">
         {items.map((item, idx) => (
-          <li key={idx} className="flex items-start gap-3 text-sm text-slate-300">
-            <Gift className="w-4 h-4 text-yellow-500 shrink-0 mt-1" />
+          <li key={idx} className="flex items-start gap-3 text-sm text-slate-700">
+            <Gift className="w-4 h-4 text-blue-500 shrink-0 mt-1" />
             <span className="leading-snug">{item}</span>
           </li>
         ))}
