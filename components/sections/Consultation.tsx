@@ -1,27 +1,31 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useTheme } from "@/contexts/ThemeContext";
-import { MessageCircle, TrendingUp, Map } from "lucide-react";
 
 export const Consultation = () => {
   const { theme } = useTheme();
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   const items = [
     {
-      icon: <MessageCircle className="w-6 h-6" />,
+      image: `${basePath}/images/step1.png`,
       title: "ヒアリング",
       description: "あなたの職種・業務内容・実現したい未来をヒアリング",
+      delay: "0.2s",
     },
     {
-      icon: <TrendingUp className="w-6 h-6" />,
+      image: `${basePath}/images/step2.png`,
       title: "市場価値の整理",
       description: "AIを使うことで収入や市場価値はどれだけ上がるのかを整理",
+      delay: "0.4s",
     },
     {
-      icon: <Map className="w-6 h-6" />,
+      image: `${basePath}/images/step3.png`,
       title: "ロードマップ作成",
       description: "今後のキャリアロードマップを作成",
+      delay: "0.6s",
     },
   ];
 
@@ -33,32 +37,39 @@ export const Consultation = () => {
             <span className={`bg-gradient-to-r ${theme.agitation.graphBar} text-white text-xs font-bold px-3 py-1 rounded-full`}>
               What We Do
             </span>
-            <h3 className="text-xl md:text-3xl font-bold text-slate-800 mt-3">
-              この個別相談では
+            <h2 className="text-xl md:text-3xl font-bold text-slate-800 mt-3">
+              個別相談で
               <br className="md:hidden" />
-              以下のようなことを行います
-            </h3>
+              行うこと
+            </h2>
+            <p className="text-slate-600 mt-2 text-sm md:text-base">
+              3ステップであなたのAIキャリアを明確にします
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <ul className="grid md:grid-cols-3 gap-6 md:gap-8">
             {items.map((item, index) => (
-              <div
+              <li
                 key={index}
-                className={`${theme.target.container} rounded-2xl p-6 text-center border shadow-sm hover:shadow-md transition-shadow`}
+                className="flex flex-col items-center text-center animate-fade-in-up"
+                style={{ animationDelay: item.delay }}
               >
-                <div className={`inline-flex items-center justify-center w-14 h-14 rounded-full ${theme.pain.icon} ${theme.target.check} mb-4`}>
-                  {item.icon}
+                <div className="relative w-40 h-48 md:w-48 md:h-56 mb-1">
+                  <Image
+                    src={item.image}
+                    alt={`ステップ${index + 1}: ${item.title}`}
+                    fill
+                    className="object-contain"
+                    loading="lazy"
+                  />
                 </div>
-                <div className={`text-xs font-bold ${theme.target.check} mb-2`}>
-                  STEP {index + 1}
-                </div>
-                <h4 className="font-bold text-slate-800 mb-2">{item.title}</h4>
+                <h3 className="font-bold text-slate-800 text-lg mb-1">{item.title}</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">
                   {item.description}
                 </p>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </section>

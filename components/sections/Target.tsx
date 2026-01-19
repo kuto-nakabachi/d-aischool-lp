@@ -16,9 +16,9 @@ export const Target = () => {
               Target
             </span>
             <h3 className="text-xl md:text-3xl font-bold text-slate-800 mt-2">
-              この個別相談は
+              こんな方に
               <br className="md:hidden" />
-              次のような方におすすめです
+              おすすめです
             </h3>
           </div>
 
@@ -32,9 +32,9 @@ export const Target = () => {
 
           <div className="mt-10 text-center">
             <p className={`font-bold ${theme.target.text} mb-4`}>
-              セミナーでは聞けない「あなたの職種」に特化した
+              セミナーでは聞けない
               <br className="md:hidden" />
-              AI活用法を伝授します
+              「あなた」に特化したAI活用法を伝授
             </p>
             <ArrowDown className={`mx-auto ${theme.target.check} w-8 h-8 animate-bounce opacity-60`} />
           </div>

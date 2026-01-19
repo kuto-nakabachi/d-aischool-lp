@@ -46,12 +46,12 @@ export const Agitation = () => {
                     2025
                   </span>
                 </div>
-                <div className={`w-1/5 bg-gradient-to-t ${theme.agitation.graphBar} rounded-t-lg h-[50%] relative group`}>
+                <div className="w-1/5 bg-gradient-to-t from-sky-300 to-blue-400 rounded-t-lg h-[50%] relative group">
                   <span className={`absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold ${theme.agitation.accent}`}>
                     2027
                   </span>
                 </div>
-                <div className={`w-1/5 bg-gradient-to-t ${theme.agitation.graphBar} rounded-t-lg h-[90%] relative group shadow-lg`}>
+                <div className="w-1/5 bg-gradient-to-t from-blue-500 to-blue-700 rounded-t-lg h-[90%] relative group shadow-lg">
                   <span className={`absolute -top-8 left-1/2 -translate-x-1/2 text-sm font-bold ${theme.agitation.accent} whitespace-nowrap bg-white px-2 py-0.5 rounded shadow`}>
                     15倍以上
                   </span>

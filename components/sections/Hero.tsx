@@ -33,11 +33,13 @@ export const Hero = () => {
         <p className="text-slate-600 text-sm md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
           AIを「学ぶ」から、AIで「稼ぐ」へ。
           <br />
-          ただ学ぶだけでは稼げない。×AIで、
+          ただ学ぶだけでは稼げない。
           <br className="md:hidden" />
-          最短で年収を上げる
+          あなた×AIで最短で年収を上げる
           <span className={`${theme.hero.text} font-bold border-b-2 ${theme.hero.accent.replace('text-', 'border-')}`}>「あなただけの戦略」</span>
-          を個別に提示します。
+          を
+          <br className="md:hidden" />
+          個別に提示します。
         </p>
 
         <div className="bg-white border border-slate-200 shadow-lg rounded-2xl p-6 max-w-3xl mx-auto mb-10 relative overflow-hidden group hover:shadow-xl transition-shadow">

@@ -1,16 +1,49 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { AlertTriangle, TrendingUp, Clock, Briefcase } from "lucide-react";
 import { PainBubble } from "../ui";
 import { useTheme } from "@/contexts/ThemeContext";
 
 export const Pain = () => {
   const { theme } = useTheme();
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   return (
-    <section className={`py-16 ${theme.pain.bg} ${theme.pain.text} relative`}>
-      <div className="container mx-auto px-4">
+    <section className={`py-16 ${theme.pain.bg} ${theme.pain.text} relative overflow-hidden`}>
+      {/* 背景画像 - PC用 */}
+      <div
+        className="hidden md:block absolute left-0 right-0 pointer-events-none"
+        style={{
+          top: 0,
+          bottom: "170px"
+        }}
+      >
+        <Image
+          src={`${basePath}/images/image_010.svg`}
+          alt=""
+          fill
+          className="object-cover object-bottom"
+        />
+      </div>
+      {/* 背景画像 - スマホ用 */}
+      <div
+        className="md:hidden absolute left-0 right-0 pointer-events-none"
+        style={{
+          top: 0,
+          bottom: "240px"
+        }}
+      >
+        <Image
+          src={`${basePath}/images/image_011.svg`}
+          alt=""
+          fill
+          className="object-cover object-bottom"
+        />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
           こんな<span className={`${theme.pain.accent} border-b-2`} style={{ borderColor: 'currentColor' }}>「見えない悩み」</span>を
           <br className="md:hidden" />

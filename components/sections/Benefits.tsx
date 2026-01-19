@@ -1,12 +1,14 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { TrendingUp, Clock, ShieldCheck } from "lucide-react";
 import { BenefitCategory } from "../ui";
 import { useTheme } from "@/contexts/ThemeContext";
 
 export const Benefits = () => {
   const { theme } = useTheme();
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   return (
     <section className={`py-20 ${theme.benefits.bg} overflow-hidden relative`}>
@@ -15,18 +17,90 @@ export const Benefits = () => {
           <span className="inline-block bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold px-4 py-1 rounded-full mb-4 shadow-lg">
             参加者限定 無料プレゼント
           </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500">
-            総額29,800円相当
-            <br />
-            豪華15大特典
-          </h2>
-          <p className="mt-4 text-slate-600">
-            通常は有料講座で配布している資料を含みます。
-            <br className="md:hidden" />
-            個別相談に参加された方に
-            <span className="text-blue-600 font-bold border-b-2 border-blue-400">無料</span>
-            で差し上げます。
-          </p>
+          {/* モバイル表示: 画像1つ + テキスト縦並び */}
+          <div className="flex flex-col items-center gap-4 md:hidden">
+            <div className="relative w-32 h-32 flex-shrink-0">
+              <Image
+                src={`${basePath}/images/2.png`}
+                alt="プレゼントボックス"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <div>
+              <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500">
+                総額29,800円相当
+                <br />
+                豪華15大特典
+              </h2>
+              <p className="mt-4 text-slate-600">
+                通常は有料講座で配布している資料を含みます。
+                <br />
+                個別相談の参加者に
+                <span className="text-blue-600 font-bold border-b-2 border-blue-400">無料</span>
+                でプレゼント。
+              </p>
+            </div>
+          </div>
+
+          {/* PC表示: 両サイドに画像、中央にテキスト */}
+          <div className="hidden md:block">
+            <div className="text-center">
+              <div className="relative inline-block">
+                {/* 左のプレゼントボックス */}
+                <div
+                  className="absolute"
+                  style={{
+                    width: "115px",
+                    height: "115px",
+                    transform: "rotate(-10deg)",
+                    top: "50%",
+                    right: "100%",
+                    marginTop: "-57.5px",
+                    marginRight: "0.5em"
+                  }}
+                >
+                  <Image
+                    src={`${basePath}/images/2.png`}
+                    alt="プレゼントボックス"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                {/* 右のプレゼントボックス */}
+                <div
+                  className="absolute"
+                  style={{
+                    width: "115px",
+                    height: "115px",
+                    transform: "rotate(10deg)",
+                    top: "50%",
+                    left: "100%",
+                    marginTop: "-57.5px",
+                    marginLeft: "0.5em"
+                  }}
+                >
+                  <Image
+                    src={`${basePath}/images/2.png`}
+                    alt="プレゼントボックス"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <h2 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500">
+                  総額29,800円相当
+                  <br />
+                  豪華15大特典
+                </h2>
+              </div>
+              <p className="mt-4 text-slate-600">
+                通常は有料講座で配布している資料を含みます。
+                個別相談の参加者に
+                <span className="text-blue-600 font-bold border-b-2 border-blue-400">無料</span>
+                でプレゼント。
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="max-w-4xl mx-auto space-y-8">
@@ -80,7 +154,25 @@ export const Benefits = () => {
           {/* Last Special Gift */}
           <div className="transform md:scale-105">
             <div className="bg-gradient-to-r from-blue-100 to-cyan-100 p-1 rounded-2xl shadow-lg">
-              <div className="bg-white rounded-xl p-6 md:p-8 text-center border border-blue-100">
+              <div className="bg-white rounded-xl p-6 md:p-8 text-center border border-blue-100 relative">
+                {/* PC表示のみ: 左側の画像 */}
+                <div
+                  className="hidden md:block absolute"
+                  style={{
+                    width: "189px",
+                    height: "216px",
+                    left: "-9px",
+                    top: "50%",
+                    marginTop: "-90px"
+                  }}
+                >
+                  <Image
+                    src={`${basePath}/images/1.png`}
+                    alt="AIキャリアロードマップ"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
                 <div className="inline-block bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded mb-4">
                   Special Gift
                 </div>
