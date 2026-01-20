@@ -3,9 +3,13 @@
 import React from "react";
 import Image from "next/image";
 import { Search, Wallet, Puzzle, TrendingDown, LucideIcon } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export const Pain = () => {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const [headerRef, isHeaderVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const [cardsRef, isCardsVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
+  const [footerRef, isFooterVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.3 });
 
   const content = {
     items: [
@@ -73,7 +77,12 @@ export const Pain = () => {
         <div className="max-w-4xl mx-auto">
 
           {/* ヘッダーセクション */}
-          <div className="text-center mb-12">
+          <div
+            ref={headerRef}
+            className={`text-center mb-12 transition-all duration-700 ease-out ${
+              isHeaderVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
             <span className="bg-blue-50 text-blue-700 font-bold px-4 py-1 rounded-full text-sm inline-block mb-4">
               Warning
             </span>
@@ -83,13 +92,18 @@ export const Pain = () => {
           </div>
 
           {/* カードセクション（背景アイコン付き） */}
-          <div className="grid md:grid-cols-2 gap-5 mb-12">
+          <div ref={cardsRef} className="grid md:grid-cols-2 gap-5 mb-12">
             {content.items.map((item, idx) => {
               const IconComponent = item.icon;
               return (
                 <div
                   key={idx}
-                  className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-50 hover:border-blue-200 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 group relative overflow-hidden"
+                  className={`bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-50 hover:border-blue-200 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-500 group relative overflow-hidden ${
+                    isCardsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  }`}
+                  style={{
+                    transitionDelay: `${idx * 100}ms`,
+                  }}
                 >
                   {/* 背景アイコン */}
                   <IconComponent className="absolute right-4 top-4 w-24 h-24 text-slate-200/50 group-hover:text-blue-200/50 transition-colors duration-300" />
@@ -114,7 +128,12 @@ export const Pain = () => {
           </div>
 
           {/* フッターセクション */}
-          <div className="text-center">
+          <div
+            ref={footerRef}
+            className={`text-center transition-all duration-700 ease-out delay-200 ${
+              isFooterVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
+            }`}
+          >
             <div className="inline-block relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl blur opacity-20"></div>
               <div className="relative bg-white rounded-xl p-6 border border-blue-100 shadow-sm">
