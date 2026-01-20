@@ -2,11 +2,13 @@
 
 :root {
   --foreground-rgb: 26, 32, 44;
+  --font-noto-sans-jp: "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: #f9fafb;
+  font-family: var(--font-noto-sans-jp);
 }
 
 @layer utilities {

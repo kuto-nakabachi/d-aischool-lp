@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { Search, Wallet, Puzzle, TrendingDown, LucideIcon } from "lucide-react";
 
 export const Pain = () => {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -9,22 +10,26 @@ export const Pain = () => {
   const content = {
     items: [
       {
-        title: "ただの「検索ツール」になっている",
+        icon: Search,
+        title: "ただの「検索ツール」止まり",
         desc: "ChatGPT、すごいのは分かるけど…結局、Google検索の代わりくらいにしか使えていない。業務が劇的に楽になった実感がない。",
       },
       {
+        icon: Wallet,
         title: "稼げるイメージが湧かない",
         desc: "『AI副業で月◯万！』という広告はよく見るけど、具体的にどうやって案件を取るの？怪しい情報ばかりで、正しい一歩目が分からない。",
       },
       {
-        title: "情報の落とし込み方が分からない",
+        icon: Puzzle,
+        title: "情報の落とし込み方が不明",
         desc: "情報は追ってるけど、自分の仕事への活かし方が分からない。『もっと上手く使えそう』という感覚だけが残ってモヤモヤする。",
       },
       {
+        icon: TrendingDown,
         title: "将来性への漠然とした不安",
         desc: "「AI時代に仕事がなくなる」というニュースを見て、自分の職種の将来性に不安を感じている。このままでいいのか確認したい。",
       }
-    ],
+    ] as { icon: LucideIcon; title: string; desc: string }[],
     footer: {
       main: "その悩み、決してあなたの能力不足ではありません。",
       sub: "ただ、「正しい勝ちパターン」を知らないだけです。"
@@ -67,7 +72,7 @@ export const Pain = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
 
-          {/* Header Section */}
+          {/* ヘッダーセクション */}
           <div className="text-center mb-12">
             <span className="bg-blue-50 text-blue-700 font-bold px-4 py-1 rounded-full text-sm inline-block mb-4">
               Warning
@@ -77,26 +82,38 @@ export const Pain = () => {
             </h2>
           </div>
 
-          {/* Cards Section (Numbered, No Icon) */}
+          {/* カードセクション（背景アイコン付き） */}
           <div className="grid md:grid-cols-2 gap-5 mb-12">
-            {content.items.map((item, idx) => (
-              <div key={idx} className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-50 hover:border-blue-200 shadow-sm hover:shadow-lg hover:shadow-cyan-100/50 transition-all duration-300 group">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-4xl font-black text-slate-300 group-hover:text-blue-300 transition-colors duration-300">
-                    0{idx + 1}
-                  </span>
+            {content.items.map((item, idx) => {
+              const IconComponent = item.icon;
+              return (
+                <div
+                  key={idx}
+                  className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-50 hover:border-blue-200 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 group relative overflow-hidden"
+                >
+                  {/* 背景アイコン */}
+                  <IconComponent className="absolute right-4 top-4 w-24 h-24 text-slate-200/50 group-hover:text-blue-200/50 transition-colors duration-300" />
+
+                  {/* コンテンツ */}
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-4xl font-black text-slate-200 group-hover:text-blue-300 transition-colors duration-300">
+                        0{idx + 1}
+                      </span>
+                    </div>
+                    <h3 className="text-base font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-base font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-slate-600 text-sm leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          {/* Footer Section */}
+          {/* フッターセクション */}
           <div className="text-center">
             <div className="inline-block relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl blur opacity-20"></div>

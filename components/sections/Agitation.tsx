@@ -1,93 +1,147 @@
 "use client";
 
-import React from "react";
-import { useTheme } from "@/contexts/ThemeContext";
+import React, { useEffect, useRef, useState } from "react";
 
 export const Agitation = () => {
-  const { theme } = useTheme();
+  const graphRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (graphRef.current) {
+      observer.observe(graphRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const barBaseStyle = {
+    transition: "height 1.5s cubic-bezier(0.16, 1, 0.3, 1)",
+  };
 
   return (
-    <section className={`py-16 ${theme.agitation.bg} border-t border-b border-slate-200`}>
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <span className={`${theme.agitation.highlight} font-bold px-4 py-1 rounded-full text-sm inline-block mb-4`}>
-              Warning
-            </span>
-            <h2 className="text-2xl md:text-4xl font-bold text-slate-800 leading-tight">
-              「様子見」をしている間に、
+    <section className="py-20 bg-slate-900 text-white relative">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <div className="flex flex-col lg:flex-row items-center gap-16">
+          {/* テキストエリア */}
+          <div className="lg:w-1/2 space-y-6">
+            <h2 className="text-3xl lg:text-4xl font-black leading-snug">
+              「様子見」の間に、
               <br />
-              あなたの市場価値は暴落し始めています。
+              市場価値の格差は
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-400">
+                取り返しのつかないレベル
+              </span>
+              <br />
+              に拡大しています。
             </h2>
+            <p className="text-slate-400 text-lg leading-relaxed">
+              生成AI市場は爆発的に成長しています。
+              <br />
+              AIを「使いこなす人」と「使えない人」の間には、
+              <span className="text-white font-bold border-b border-orange-500">
+                生涯年収で1億円近くの差
+              </span>
+              が生まれると言われています。
+            </p>
+            <p className="text-xl font-bold text-white mt-4">
+              だからこそ、
+              <span className="text-white bg-gradient-to-r from-blue-400 to-blue-600 px-3 py-1 rounded shadow-lg">
+                &quot;今&quot;
+              </span>{" "}
+              動くべきなのです。
+            </p>
           </div>
 
-          <div className="bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row items-center gap-10">
-            {/* グラフ表現 */}
-            <div className="w-full md:w-1/2">
-              <h3 className="text-sm font-bold text-slate-500 mb-4 text-center">
-                生成AI市場規模の推移予測
-              </h3>
-              <div className="h-64 flex items-end justify-between gap-2 px-4 border-b-2 border-slate-200 relative">
-                {/* 背景グリッド */}
-                <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between pointer-events-none opacity-20">
-                  <div className="w-full h-px bg-slate-400"></div>
-                  <div className="w-full h-px bg-slate-400"></div>
-                  <div className="w-full h-px bg-slate-400"></div>
-                </div>
-
-                {/* 棒グラフ */}
-                <div className="w-1/5 bg-slate-300 rounded-t-lg h-[10%] relative group">
-                  <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-slate-500">
-                    2023
-                  </span>
-                </div>
-                <div className="w-1/5 bg-slate-400 rounded-t-lg h-[25%] relative group">
-                  <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-slate-500">
-                    2025
-                  </span>
-                </div>
-                <div className="w-1/5 bg-gradient-to-t from-sky-300 to-blue-400 rounded-t-lg h-[50%] relative group">
-                  <span className={`absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold ${theme.agitation.accent}`}>
-                    2027
-                  </span>
-                </div>
-                <div className="w-1/5 bg-gradient-to-t from-blue-500 to-blue-700 rounded-t-lg h-[90%] relative group shadow-lg">
-                  <span className={`absolute -top-8 left-1/2 -translate-x-1/2 text-sm font-bold ${theme.agitation.accent} whitespace-nowrap bg-white px-2 py-0.5 rounded shadow`}>
-                    15倍以上
-                  </span>
-                  <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-white text-xs font-bold">
-                    2030
-                  </span>
-                </div>
+          {/* グラフエリア */}
+          <div
+            ref={graphRef}
+            className="lg:w-1/2 w-full bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-2xl relative"
+          >
+            <h3 className="text-center font-bold text-slate-400 mb-8 text-sm">
+              生成AI市場規模と人材価値の推移予測
+            </h3>
+            <div className="flex items-end justify-between h-64 relative z-10 gap-4 px-2">
+              {/* Y軸ライン */}
+              <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
+                <div className="w-full h-px bg-slate-400"></div>
+                <div className="w-full h-px bg-slate-400"></div>
+                <div className="w-full h-px bg-slate-400"></div>
               </div>
-            </div>
 
-            <div className="w-full md:w-1/2 space-y-4">
-              <p className={`text-lg leading-relaxed ${theme.agitation.text}`}>
-                この爆発的な成長の中で、
-                <br className="md:hidden" />
-                AIを「使いこなす人」と「使えない人」の間には、
-                <span className={`font-bold ${theme.agitation.highlight} px-1`}>
-                  生涯年収で1億円近くの差
-                </span>
-                が生まれると言われています。
-              </p>
-              <p className={`text-lg leading-relaxed ${theme.agitation.text}`}>
-                「なんとなく興味はあるけど、
-                <br className="md:hidden" />
-                周りがやってから...」
-                <br />
-                その姿勢でいると、気づいた時には
-                <span className={`font-bold border-b-2 ${theme.agitation.accent.replace('text-', 'border-')}`}>
-                  「AIを使える人材」に
-                  <br className="md:hidden" />
-                  あなたの仕事が奪われている
-                </span>
-                かもしれません。
-              </p>
-              <p className="text-xl font-bold text-slate-800 mt-4">
-                だからこそ、<span className={`text-white bg-gradient-to-r ${theme.agitation.graphBar} px-3 py-1 rounded`}>&quot;今&quot;</span> 動くべきなのです。
-              </p>
+              {/* 2023年 棒グラフ */}
+              <div className="w-1/4 flex flex-col justify-end items-center group h-full">
+                <div
+                  className="w-full bg-slate-600 rounded-t-md hover:bg-slate-500"
+                  style={{
+                    ...barBaseStyle,
+                    height: isVisible ? "15%" : "0%",
+                    transitionDelay: "0ms",
+                  }}
+                />
+                <span className="mt-4 text-xs font-bold text-slate-500">2023</span>
+              </div>
+
+              {/* 2025年 棒グラフ */}
+              <div className="w-1/4 flex flex-col justify-end items-center group h-full">
+                <div
+                  className="w-full bg-blue-900 rounded-t-md hover:bg-blue-800"
+                  style={{
+                    ...barBaseStyle,
+                    height: isVisible ? "35%" : "0%",
+                    transitionDelay: "200ms",
+                  }}
+                />
+                <span className="mt-4 text-xs font-bold text-slate-500">2025</span>
+              </div>
+
+              {/* 2027年 棒グラフ */}
+              <div className="w-1/4 flex flex-col justify-end items-center group h-full">
+                <div
+                  className="w-full bg-blue-600 rounded-t-md hover:bg-blue-500"
+                  style={{
+                    ...barBaseStyle,
+                    height: isVisible ? "65%" : "0%",
+                    transitionDelay: "400ms",
+                  }}
+                />
+                <span className="mt-4 text-xs font-bold text-blue-400">2027</span>
+              </div>
+
+              {/* 2030年 棒グラフ（メイン） */}
+              <div className="w-1/4 flex flex-col justify-end items-center group h-full">
+                <div
+                  className="w-full bg-gradient-to-t from-orange-600 to-orange-400 rounded-t-md relative shadow-lg shadow-orange-500/50"
+                  style={{
+                    ...barBaseStyle,
+                    height: isVisible ? "95%" : "0%",
+                    transitionDelay: "600ms",
+                  }}
+                >
+                  <div
+                    className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-orange-600 text-xs font-bold px-3 py-1 rounded-full shadow-lg whitespace-nowrap hover:scale-110 transition-transform"
+                    style={{
+                      opacity: isVisible ? 1 : 0,
+                      transition: "opacity 0.5s ease-in-out 1.5s",
+                    }}
+                  >
+                    15倍以上
+                  </div>
+                </div>
+                <span className="mt-4 text-sm font-bold text-orange-400">2030</span>
+              </div>
             </div>
           </div>
         </div>
