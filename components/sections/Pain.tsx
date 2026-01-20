@@ -53,28 +53,28 @@ export const Pain = () => {
         <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-12">
           <PainBubble
             icon={<AlertTriangle className={`${theme.pain.accent} w-6 h-6 shrink-0`} />}
-            title="ただの「検索ツール」になっている"
+            title={<span className="bg-blue-100 text-blue-700 px-1 rounded font-bold">ただの「検索ツール」になっている</span>}
             text="ChatGPT、すごいのは分かるけど…結局、Google検索の代わりくらいにしか使えていない。業務が劇的に楽になった実感がない。"
             align="left"
             theme={theme}
           />
           <PainBubble
             icon={<TrendingUp className={`${theme.pain.accent} w-6 h-6 shrink-0`} />}
-            title="稼げるイメージが湧かない"
+            title={<span className="bg-blue-100 text-blue-700 px-1 rounded font-bold">稼げるイメージが湧かない</span>}
             text="『AI副業で月◯万！』という広告はよく見るけど、具体的にどうやって案件を取るの？怪しい情報ばかりで、正しい一歩目が分からない。"
             align="right"
             theme={theme}
           />
           <PainBubble
             icon={<Clock className={`${theme.pain.accent} w-6 h-6 shrink-0`} />}
-            title="情報の落とし込み方が分からない"
+            title={<span className="bg-blue-100 text-blue-700 px-1 rounded font-bold">情報の落とし込み方が分からない</span>}
             text="情報は追ってるけど、自分の仕事への活かし方が分からない。『もっと上手く使えそう』という感覚だけが残ってモヤモヤする。"
             align="left"
             theme={theme}
           />
           <PainBubble
             icon={<Briefcase className={`${theme.pain.accent} w-6 h-6 shrink-0`} />}
-            title="将来性への漠然とした不安"
+            title={<span className="bg-blue-100 text-blue-700 px-1 rounded font-bold">将来性への漠然とした不安</span>}
             text="「AI時代に仕事がなくなる」というニュースを見て、自分の職種の将来性に不安を感じている。このままでいいのか確認したい。"
             align="right"
             theme={theme}
@@ -85,7 +85,7 @@ export const Pain = () => {
           <p className="text-lg md:text-xl leading-relaxed font-medium">
             その悩み、決してあなたの能力不足ではありません。
             <br />
-            ただ、<span className={`${theme.pain.accent} font-bold text-2xl`}>「正しい勝ちパターン」</span>
+            ただ、<span className="bg-blue-100 text-blue-700 px-1 rounded font-bold text-2xl">「正しい勝ちパターン」</span>
             を知らないだけです。
           </p>
         </div>

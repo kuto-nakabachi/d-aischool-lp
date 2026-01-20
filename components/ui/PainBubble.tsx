@@ -5,7 +5,7 @@ import { Theme } from "@/contexts/ThemeContext";
 
 interface PainBubbleProps {
   icon: React.ReactNode;
-  title: string;
+  title: React.ReactNode;
   text: string;
   align: "left" | "right";
   theme?: Theme;

@@ -64,23 +64,29 @@ export const Agitation = () => {
 
             <div className="w-full md:w-1/2 space-y-4">
               <p className={`text-lg leading-relaxed ${theme.agitation.text}`}>
-                この爆発的な成長の中で、AIを「使いこなす人」と「使えない人」の間には、
+                この爆発的な成長の中で、
+                <br className="md:hidden" />
+                AIを「使いこなす人」と「使えない人」の間には、
                 <span className={`font-bold ${theme.agitation.highlight} px-1`}>
                   生涯年収で1億円近くの差
                 </span>
                 が生まれると言われています。
               </p>
               <p className={`text-lg leading-relaxed ${theme.agitation.text}`}>
-                「なんとなく興味はあるけど、周りがやってから...」その姿勢でいると、気づいた時には
+                「なんとなく興味はあるけど、
+                <br className="md:hidden" />
+                周りがやってから...」
+                <br />
+                その姿勢でいると、気づいた時には
                 <span className={`font-bold border-b-2 ${theme.agitation.accent.replace('text-', 'border-')}`}>
-                  「AIを使える人材」にあなたの仕事が奪われている
+                  「AIを使える人材」に
+                  <br className="md:hidden" />
+                  あなたの仕事が奪われている
                 </span>
                 かもしれません。
               </p>
               <p className="text-xl font-bold text-slate-800 mt-4">
-                だからこそ、
-                <span className={`text-white bg-gradient-to-r ${theme.agitation.graphBar} px-3 py-1 rounded`}>&quot;今&quot;</span>{" "}
-                動くべきなのです。
+                だからこそ、<span className={`text-white bg-gradient-to-r ${theme.agitation.graphBar} px-3 py-1 rounded`}>&quot;今&quot;</span> 動くべきなのです。
               </p>
             </div>
           </div>
