@@ -2,11 +2,13 @@
 
 :root {
   --foreground-rgb: 26, 32, 44;
+  --font-sans: var(--font-noto-sans-jp);
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: #f9fafb;
+  font-family: var(--font-sans);
 }
 
 @layer utilities {

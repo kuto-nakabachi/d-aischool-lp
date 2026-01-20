@@ -1,74 +1,123 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
+import { Play } from "lucide-react";
 
 export const Hero = () => {
-  const { theme } = useTheme();
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   return (
-    <section className={`pt-24 pb-12 md:pt-32 md:pb-20 ${theme.hero.bg} ${theme.hero.text} relative overflow-hidden`}>
-      {/* 背景装飾 - 明るいテーマ用に調整 */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-current rounded-full blur-3xl opacity-10"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-current rounded-full blur-3xl opacity-10"></div>
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10 text-center">
-        <div className={`inline-block ${theme.hero.badge} border backdrop-blur-md px-4 py-1 rounded-full text-xs md:text-sm font-bold mb-6 animate-fade-in-up`}>
-          \ 参加者満足度98%！あなたの市場価値を再定義 /
+    <>
+      {/* PC表示用 */}
+      <section className="hidden md:block relative min-h-[50rem] h-[95vh]">
+        {/* 背景画像 */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={`${basePath}/images/firstview_pc.webp`}
+            alt=""
+            fill
+            className="object-cover object-center"
+            priority
+          />
         </div>
 
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight">
-          AI時代に、あなたの<br className="md:hidden" />
-          市場価値はいくら上がる？
-          <br />
-          <span className={`text-transparent bg-clip-text ${theme.hero.gradientText} block mt-2`}>
-            プロが算出「AIキャリア・年収診断」
-          </span>
-        </h1>
+        {/* コンテンツラッパー */}
+        <div className="relative z-10 h-full container mx-auto px-8 lg:px-16 flex items-center justify-start">
+          <div className="text-center mt-[5vh]" style={{ marginLeft: "-100px" }}>
+            {/* メインキャッチコピー */}
+            <h1 className="font-black text-slate-800 leading-[1.3]" style={{ fontSize: "clamp(1.875rem, 1rem + 3vw, 3rem)" }}>
+              あなた専用の
+              <br />
+              <span className="text-transparent bg-clip-text bg-[linear-gradient(135deg,_#1e40af,_#3b82f6)]">
+                AI×キャリアロードマップ
+              </span>
+              <br />
+              <span className="whitespace-nowrap">プロが無料で作成</span>
+            </h1>
 
-        <p className="text-slate-600 text-sm md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
-          AIを「学ぶ」から、AIで「稼ぐ」へ。
-          <br />
-          ただ学ぶだけでは稼げない。
-          <br className="md:hidden" />
-          あなた×AIで最短で年収を上げる
-          <span className={`${theme.hero.text} font-bold border-b-2 ${theme.hero.accent.replace('text-', 'border-')}`}>「あなただけの戦略」</span>
-          を
-          <br className="md:hidden" />
-          個別に提示します。
-        </p>
+            {/* サブキャッチコピー */}
+            <p className="mt-4 text-slate-600 tracking-wide" style={{ fontSize: "clamp(0.875rem, 0.5rem + 1vw, 1.125rem)" }}>
+              プロのメンターがあなただけのAIキャリアロードマップを作成
+            </p>
 
-        <div className="bg-white border border-slate-200 shadow-lg rounded-2xl p-6 max-w-3xl mx-auto mb-10 relative overflow-hidden group hover:shadow-xl transition-shadow">
-          <div className={`absolute top-0 right-0 ${theme.hero.button.split(' ')[0]} ${theme.hero.button.split(' ')[1]} ${theme.hero.button.split(' ')[2]} text-white text-xs font-bold px-3 py-1 rounded-bl-lg shadow-lg z-10`}>
-            先着30名限定
+            {/* CTAボタン */}
+            <div className="mt-8">
+              <Link
+                href="/booking"
+                data-hero-cta
+                className="inline-flex flex-col items-center bg-gradient-to-b from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-bold py-4 px-10 rounded-xl shadow-lg hover:shadow-xl hover:translate-y-[2px] transition-all"
+                style={{ fontSize: "clamp(1rem, 0.5rem + 1.5vw, 1.375rem)" }}
+              >
+                <span className="flex items-center gap-2 tracking-wider">
+                  【無料】まずは話を聞いてみる
+                  <Play className="w-5 h-5 fill-current" />
+                </span>
+              </Link>
+            </div>
+
+            {/* 注記 */}
+            <p className="mt-6 text-base text-slate-500 leading-relaxed">
+              ※総額29,800円相当の豪華10大特典
+              <br />
+              【個別相談参加者限定】無料配布中
+            </p>
           </div>
-          <p className="text-base md:text-lg font-bold text-slate-700 mb-2">
-            通常は有料講座で配布している資料を含む
-          </p>
-          <div className={`text-2xl md:text-4xl font-extrabold text-transparent bg-clip-text ${theme.hero.gradientText} mb-2`}>
-            豪華15大特典 無料配布中
-          </div>
-          <p className="text-xs text-slate-500 mt-2">
-            ※AIを触っている状態から、業務に組み込める状態へ引き上げます
-          </p>
         </div>
+      </section>
 
-        <div className="flex flex-col items-center gap-4">
-          <Link
-            href="/booking"
-            data-hero-cta
-            className={`w-full md:w-auto ${theme.hero.button} text-white text-xl md:text-2xl font-bold py-4 px-8 md:px-12 rounded-full ${theme.hero.buttonShadow} hover:shadow-lg hover:translate-y-[2px] transition-all flex items-center justify-center gap-2 group`}
-          >
-            <span>無料で診断を受ける</span>
-            <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <p className="text-xs text-slate-500">※60分で今後のキャリアプランが明確になります</p>
+      {/* スマホ表示用 */}
+      <section className="md:hidden relative">
+        {/* 背景画像 */}
+        <Image
+          src={`${basePath}/images/firstview_sp.webp`}
+          alt=""
+          width={750}
+          height={1334}
+          className="w-full h-auto"
+          priority
+        />
+
+        {/* オーバーレイコンテンツ（下半分） */}
+        <div className="absolute left-0 right-0 h-1/2 flex flex-col justify-end px-4 pb-8" style={{ bottom: "60px", marginLeft: "20px" }}>
+          <div className="text-center">
+            <h1 className="text-[6.5vw] font-black text-slate-800 leading-[1.3]">
+              あなた専用の
+              <br />
+              <span className="text-transparent bg-clip-text bg-[linear-gradient(135deg,_#1e40af,_#3b82f6)]">
+                AI×キャリアロードマップ
+              </span>
+              <br />
+              プロが無料で作成
+            </h1>
+            <p className="mt-2 text-[3.5vw] text-slate-600">
+              プロのメンターがあなただけの
+              <br />
+              AIキャリアロードマップを作成
+            </p>
+
+            {/* CTA */}
+            <div className="mt-6 flex flex-col items-center">
+              <Link
+                href="/booking"
+                data-hero-cta
+                className="w-full max-w-xs bg-gradient-to-b from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all flex flex-col items-center"
+              >
+                <span className="flex items-center gap-2 text-base tracking-wider">
+                  【無料】まずは話を聞いてみる
+                  <Play className="w-4 h-4 fill-current" />
+                </span>
+              </Link>
+              <p className="mt-4 text-base text-slate-500 text-center leading-relaxed">
+                ※総額29,800円相当の豪華10大特典
+                <br />
+                【個別相談参加者限定】無料配布中
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };

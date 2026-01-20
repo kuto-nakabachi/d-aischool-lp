@@ -43,7 +43,7 @@ export const TargetSection = () => {
               <Target className="w-4 h-4 mr-1" />
               Target
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
+            <h2 className="text-2xl md:text-3xl font-black text-slate-800">
               こんな方に<span className="text-indigo-600">おすすめ</span>です
             </h2>
           </div>

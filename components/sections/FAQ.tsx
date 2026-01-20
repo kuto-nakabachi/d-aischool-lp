@@ -10,7 +10,7 @@ export const FAQ = () => {
   return (
     <section id="cta-section" className={`py-16 ${theme.faq.bg}`}>
       <div className="container mx-auto px-4 max-w-3xl">
-        <h2 className={`text-2xl md:text-3xl font-bold text-center ${theme.faq.text} mb-10`}>
+        <h2 className={`text-2xl md:text-3xl font-black text-center ${theme.faq.text} mb-10`}>
           よくあるご質問
         </h2>
         <div className="space-y-4">

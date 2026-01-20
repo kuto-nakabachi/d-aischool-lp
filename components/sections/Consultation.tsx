@@ -37,7 +37,7 @@ export const Consultation = () => {
             <span className={`bg-gradient-to-r ${theme.agitation.graphBar} text-white text-xs font-bold px-3 py-1 rounded-full`}>
               What We Do
             </span>
-            <h2 className="text-xl md:text-3xl font-bold text-slate-800 mt-3">
+            <h2 className="text-xl md:text-3xl font-black text-slate-800 mt-3">
               個別相談で
               <br className="md:hidden" />
               行うこと

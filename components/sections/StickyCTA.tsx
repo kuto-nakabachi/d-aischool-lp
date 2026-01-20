@@ -44,7 +44,7 @@ export const StickyCTA = () => {
           href="/booking"
           className={`w-full ${theme.stickyCta.bg} text-white font-bold py-4 rounded-full shadow-2xl hover:${theme.stickyCta.shadow} transition-all flex items-center justify-center gap-2 text-[15px]`}
         >
-          AIキャリア診断を予約する
+          個別相談を予約する
           <ArrowRight className="w-5 h-5 shrink-0" />
         </Link>
       </div>
@@ -55,7 +55,7 @@ export const StickyCTA = () => {
           href="/booking"
           className={`${theme.stickyCta.bg} text-white font-bold py-4 px-10 rounded-full shadow-2xl hover:${theme.stickyCta.shadow} hover:-translate-y-1 transition-all flex items-center justify-center gap-2 text-lg`}
         >
-          【無料】AIキャリア診断を予約する
+          【無料】個別相談を予約する
           <ArrowRight className="w-5 h-5" />
         </Link>
       </div>

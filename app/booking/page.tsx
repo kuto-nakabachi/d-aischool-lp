@@ -152,7 +152,7 @@ export default function BookingPage() {
                 {/* タイトル */}
                 <div className="text-center mb-12">
                     <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                        【無料】AIキャリア診断を予約する
+                        【無料】個別相談を予約する
                     </h1>
                     <p className="text-lg text-gray-600">
                         ご希望の日時を選択して、予約を完了してください
