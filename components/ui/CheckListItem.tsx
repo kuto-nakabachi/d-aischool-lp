@@ -10,8 +10,8 @@ interface CheckListItemProps {
 }
 
 export const CheckListItem = ({ text, theme }: CheckListItemProps) => (
-  <li className="flex items-start gap-3">
-    <CheckCircle2 className={`w-6 h-6 ${theme?.target.check || 'text-blue-500'} shrink-0 mt-0.5`} />
-    <span className={`${theme?.target.text || 'text-slate-700'} font-bold text-sm md:text-base leading-snug`}>{text}</span>
+  <li className="flex items-center gap-3">
+    <CheckCircle2 className={`w-6 h-6 ${theme?.target.check || 'text-blue-500'} shrink-0`} />
+    <span className={`${theme?.target.text || 'text-slate-700'} font-bold text-sm md:text-base whitespace-nowrap`}>{text}</span>
   </li>
 );

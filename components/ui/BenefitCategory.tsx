@@ -9,7 +9,7 @@ interface BenefitCategoryProps {
   title: string;
   subtitle: string;
   color: string;
-  items: string[];
+  items: React.ReactNode[];
 }
 
 export const BenefitCategory = ({
