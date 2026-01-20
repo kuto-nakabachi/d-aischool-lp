@@ -27,10 +27,12 @@ export const Hero = () => {
         <div className="relative z-10 h-full container mx-auto px-8 lg:px-16 flex items-center justify-start">
           <div className="text-center mt-[5vh]" style={{ marginLeft: "-100px" }}>
             {/* メインキャッチコピー */}
-            <h1 className="font-bold text-slate-800 leading-[1.3]" style={{ fontSize: "clamp(1.875rem, 1rem + 3vw, 3rem)" }}>
+            <h1 className="font-black text-slate-800 leading-[1.3]" style={{ fontSize: "clamp(1.875rem, 1rem + 3vw, 3rem)" }}>
               あなた専用の
               <br />
-              AI×キャリアロードマップ
+              <span className="text-transparent bg-clip-text bg-[linear-gradient(135deg,_#1e40af,_#3b82f6)]">
+                AI×キャリアロードマップ
+              </span>
               <br />
               <span className="whitespace-nowrap">プロが無料で作成</span>
             </h1>
@@ -57,7 +59,7 @@ export const Hero = () => {
 
             {/* 注記 */}
             <p className="mt-6 text-base text-slate-500 leading-relaxed">
-              ※総額29,800円相当の豪華15大特典
+              ※総額29,800円相当の豪華10大特典
               <br />
               【個別相談参加者限定】無料配布中
             </p>
@@ -80,10 +82,12 @@ export const Hero = () => {
         {/* オーバーレイコンテンツ（下半分） */}
         <div className="absolute left-0 right-0 h-1/2 flex flex-col justify-end px-4 pb-8" style={{ bottom: "60px", marginLeft: "20px" }}>
           <div className="text-center">
-            <h1 className="text-[6.5vw] font-bold text-slate-800 leading-[1.3]">
+            <h1 className="text-[6.5vw] font-black text-slate-800 leading-[1.3]">
               あなた専用の
               <br />
-              AI×キャリアロードマップ
+              <span className="text-transparent bg-clip-text bg-[linear-gradient(135deg,_#1e40af,_#3b82f6)]">
+                AI×キャリアロードマップ
+              </span>
               <br />
               プロが無料で作成
             </h1>
@@ -106,7 +110,7 @@ export const Hero = () => {
                 </span>
               </Link>
               <p className="mt-4 text-base text-slate-500 text-center leading-relaxed">
-                ※総額29,800円相当の豪華15大特典
+                ※総額29,800円相当の豪華10大特典
                 <br />
                 【個別相談参加者限定】無料配布中
               </p>

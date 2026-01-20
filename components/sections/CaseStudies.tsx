@@ -9,7 +9,7 @@ export const CaseStudies = () => {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+          <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-4">
             実際に「個別無料相談」を受けた方の声
           </h2>
           <div className="flex items-center justify-center gap-2 mb-2">
@@ -20,7 +20,7 @@ export const CaseStudies = () => {
               <Star className="w-5 h-5 fill-current" />
               <Star className="w-5 h-5 fill-current" />
             </div>
-            <span className="font-bold text-slate-800 text-lg">4.8</span>
+            <span className="font-black text-slate-800 text-lg">4.8</span>
             <span className="text-slate-500 text-sm">(1326)</span>
           </div>
         </div>

@@ -100,10 +100,10 @@ export const Benefits = () => {
               />
             </div>
             <div>
-              <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500">
+              <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500">
                 総額29,800円相当
                 <br />
-                豪華15大特典
+                豪華10大特典
               </h2>
             </div>
           </div>
@@ -150,10 +150,10 @@ export const Benefits = () => {
                     className="object-contain"
                   />
                 </div>
-                <h2 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500">
+                <h2 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500">
                   総額29,800円相当
                   <br />
-                  豪華15大特典
+                  豪華10大特典
                 </h2>
               </div>
             </div>
@@ -161,19 +161,19 @@ export const Benefits = () => {
         </div>
 
         {/* メインコンテンツ: 2カラムグリッド */}
-        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch">
           {/* 左側：特典リスト */}
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4 h-full">
             {benefitSets.map((set, i) => (
-              <Reveal key={i} delay={i * 100}>
-                <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300">
+              <Reveal key={i} delay={i * 100} className="flex-1">
+                <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
                   <div
                     className={`px-6 py-3 bg-gradient-to-r ${set.color} text-white font-bold flex items-center gap-2`}
                   >
                     <Gift className="w-5 h-5" />
                     {set.title}
                   </div>
-                  <div className="p-6">
+                  <div className="p-6 flex-1">
                     <ul className="space-y-3">
                       {set.items.map((item, j) => (
                         <li
