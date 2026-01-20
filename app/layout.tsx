@@ -5,9 +5,10 @@ import { Providers } from "@/components/Providers";
 
 const notoSansJP = Noto_Sans_JP({
   weight: ["400", "500", "700", "900"],
-  subsets: ["latin"],
+  subsets: ["latin", "japanese"],
   display: "swap",
   preload: false,
+  variable: "--font-noto-sans-jp",
 });
 
 export const metadata: Metadata = {
@@ -22,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${notoSansJP.className} antialiased`}>
+      <body className={`${notoSansJP.className} ${notoSansJP.variable} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>
