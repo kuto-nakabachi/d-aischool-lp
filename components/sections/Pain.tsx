@@ -73,7 +73,7 @@ export const Pain = () => {
               Warning
             </span>
             <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
-              こんな「見えない悩み」を<br className="md:hidden" />抱えていませんか？
+              AIのこんな「見えない悩み」を<br className="md:hidden" />抱えていませんか？
             </h2>
           </div>
 
