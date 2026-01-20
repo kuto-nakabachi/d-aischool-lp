@@ -9,8 +9,8 @@ on:
 
 env:
   PRODUCTION_DOMAIN: decentralizedpro.io
-  BASE_PATH: /school/Nakabachi
-  DEPLOY_PATH: decentralizedpro.io/public_html/school/Nakabachi
+  BASE_PATH: /school
+  DEPLOY_PATH: /home/dinc/decentralizedpro.io/public_html/school
 
 jobs:
   build-and-deploy-staging:
@@ -62,11 +62,11 @@ jobs:
         run: |
           echo 'AuthType Basic' > deploy/.htaccess
           echo 'AuthName "Staging Environment"' >> deploy/.htaccess
-          echo 'AuthUserFile /home/dinc/decentralizedpro.io/public_html/school/Nakabachi/.htpasswd' >> deploy/.htaccess
+          echo 'AuthUserFile ${{ env.DEPLOY_PATH }}/.htpasswd' >> deploy/.htaccess
           echo 'Require valid-user' >> deploy/.htaccess
           echo '' >> deploy/.htaccess
           echo 'RewriteEngine On' >> deploy/.htaccess
-          echo 'RewriteBase /school/Nakabachi/' >> deploy/.htaccess
+          echo 'RewriteBase ${{ env.BASE_PATH }}/' >> deploy/.htaccess
           echo '' >> deploy/.htaccess
           echo 'RewriteCond %{REQUEST_FILENAME} -f [OR]' >> deploy/.htaccess
           echo 'RewriteCond %{REQUEST_FILENAME} -d' >> deploy/.htaccess

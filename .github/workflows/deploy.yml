@@ -9,8 +9,8 @@ on:
 # ドメイン変更時はここを編集
 env:
   PRODUCTION_DOMAIN: decentralizedpro.io
-  BASE_PATH: /school/Nakabachi
-  DEPLOY_PATH: /home/dinc/decentralizedpro.io/public_html/school/Nakabachi
+  BASE_PATH: /school
+  DEPLOY_PATH: /home/dinc/decentralizedpro.io/public_html/school
 
 jobs:
   build-and-deploy:
