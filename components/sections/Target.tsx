@@ -2,8 +2,13 @@
 
 import React from "react";
 import { CheckCircle2, Target, Sparkles, TrendingUp, Cpu, ShieldCheck, UserCheck } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export const TargetSection = () => {
+  const [headerRef, isHeaderVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const [cardRef, isCardVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
+  const [bottomRef, isBottomVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.3 });
+
   const checkList = [
     {
       text: "AIスキルで「収入の柱」をもう一つ作りたい",
@@ -38,7 +43,12 @@ export const TargetSection = () => {
         <div className="max-w-3xl mx-auto">
 
           {/* Header Section */}
-          <div className="text-center mb-8">
+          <div
+            ref={headerRef}
+            className={`text-center mb-8 transition-all duration-700 ease-out ${
+              isHeaderVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
             <span className="inline-flex items-center justify-center bg-gradient-to-r from-indigo-500 to-violet-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
               <Target className="w-4 h-4 mr-1" />
               Target
@@ -49,13 +59,23 @@ export const TargetSection = () => {
           </div>
 
           {/* Main Card */}
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
+          <div
+            ref={cardRef}
+            className={`bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 transition-all duration-700 ease-out delay-100 ${
+              isCardVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
             <div className="p-6 md:p-8">
               <div className="grid gap-4">
                 {checkList.map((item, index) => (
                   <div
                     key={index}
-                    className="group flex items-start p-3 rounded-xl hover:bg-indigo-50 transition-colors duration-300 border border-transparent hover:border-indigo-100"
+                    className={`group flex items-start p-3 rounded-xl hover:bg-indigo-50 transition-all duration-500 border border-transparent hover:border-indigo-100 ${
+                      isCardVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+                    }`}
+                    style={{
+                      transitionDelay: `${200 + index * 80}ms`,
+                    }}
                   >
                     <div className="flex-shrink-0 mr-3">
                       <div className="bg-indigo-100 p-2 rounded-lg group-hover:bg-white group-hover:shadow-sm transition-all duration-300">
@@ -79,7 +99,12 @@ export const TargetSection = () => {
             </div>
 
             {/* Bottom Highlight Section */}
-            <div className="bg-gradient-to-r from-indigo-600 to-violet-600 p-6 md:p-8 text-center relative overflow-hidden">
+            <div
+              ref={bottomRef}
+              className={`bg-gradient-to-r from-indigo-600 to-violet-600 p-6 md:p-8 text-center relative overflow-hidden transition-all duration-700 ease-out ${
+                isBottomVisible ? "opacity-100" : "opacity-0"
+              }`}
+            >
               {/* Decorative circles */}
               <div className="absolute top-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -translate-x-8 -translate-y-8"></div>
               <div className="absolute bottom-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full translate-x-8 translate-y-8"></div>
